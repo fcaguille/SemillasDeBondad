@@ -20,6 +20,8 @@ import type {
   VotoInput,
 } from "@/types/domain";
 import { mockApi } from "@/mocks/mockData";
+import { USE_MOCKS } from "./config";
+import { supabaseApi } from "./supabaseApi";
 
 /**
  * The single contract between the UI and any backend.
@@ -62,4 +64,5 @@ export interface SemillasApi {
   obtenerRankingCarreras(): Promise<CarreraStats[]>;
 }
 
-export const api: SemillasApi = mockApi;
+/** Real Supabase backend by default; set VITE_USE_MOCKS=true for the offline demo. */
+export const api: SemillasApi = USE_MOCKS ? mockApi : supabaseApi;

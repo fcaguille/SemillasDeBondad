@@ -1,5 +1,5 @@
-/** Set VITE_USE_MOCKS=false in .env once real adapters are wired. */
-export const USE_MOCKS = import.meta.env.VITE_USE_MOCKS !== "false";
+/** Real Supabase backend by default. Set VITE_USE_MOCKS=true in .env for the offline demo. */
+export const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === "true";
 
 /** Demo credentials hint shown on the login tab only while mocks are active. */
 export const DEMO_LOGIN = USE_MOCKS
