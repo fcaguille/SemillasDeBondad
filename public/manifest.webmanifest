@@ -1,0 +1,76 @@
+{
+  "id": "./",
+  "name": "Semillas de Bondad · FCA UNAM",
+  "short_name": "Semillas",
+  "description": "Registra macetas recicladas, califica con QR y haz ganar a tu carrera en el Reto Ecosustentable de la FCA-UNAM.",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "start_url": "./impacto?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#F8F9F7",
+  "theme_color": "#F8F9F7",
+  "categories": ["education", "lifestyle", "social"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Escanear QR",
+      "short_name": "Escanear",
+      "url": "./escanear?source=shortcut",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Registrar maceta",
+      "short_name": "Registrar",
+      "url": "./crear-maceta?source=shortcut",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Ranking en vivo",
+      "short_name": "Ranking",
+      "url": "./ranking?source=shortcut",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/mobile-impacto.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tu impacto personal"
+    },
+    {
+      "src": "screenshots/mobile-carta.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Carta coleccionable y votación"
+    },
+    {
+      "src": "screenshots/desktop-ranking.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Pozo en vivo e índice por carrera"
+    }
+  ]
+}

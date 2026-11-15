@@ -1,0 +1,216 @@
+import { useState, type ReactNode } from "react";
+import { useNavigate } from "react-router";
+import { ChevronRight, Download, Lock, LogOut, Pencil, Scale, ShieldCheck } from "lucide-react";
+import { Page, PageHeader } from "@/components/layout/AppShell";
+import { Avatar } from "@/components/common/Avatar";
+import {
+  EditarPerfilSheet,
+  ExportCartaSheet,
+  GarantiaSheet,
+  ReglamentoSheet,
+} from "@/components/cuenta/CuentaSheets";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  useActualizarPerfil,
+  useCerrarSesion,
+  useMiPago,
+  useMisPlantas,
+  useUsuarioActual,
+} from "@/hooks/useSemillas";
+import { formatMXN } from "@/lib/utils";
+import { CARRERAS } from "@/types/domain";
+
+function Row({
+  icon,
+  tile,
+  title,
+  value,
+  valueClass = "text-muted-foreground",
+  onClick,
+}: {
+  icon: ReactNode;
+  tile: string;
+  title: string;
+  value: ReactNode;
+  valueClass?: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-muted"
+    >
+      <span
+        className="grid size-8 shrink-0 place-items-center rounded-[9px] text-white"
+        style={{ background: tile }}
+      >
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[15px] font-semibold">{title}</span>
+        <span className={`block text-[13px] font-medium tabular-nums ${valueClass}`}>{value}</span>
+      </span>
+      <ChevronRight size={18} className="shrink-0 text-[#B4BAB2]" aria-hidden />
+    </button>
+  );
+}
+
+type SheetKey = "perfil" | "garantia" | "reglamento" | "exportar" | null;
+
+export function CuentaView() {
+  const navigate = useNavigate();
+  const { data: usuario } = useUsuarioActual();
+  const pago = useMiPago();
+  const plantas = useMisPlantas();
+  const actualizar = useActualizarPerfil();
+  const cerrar = useCerrarSesion();
+  const [sheet, setSheet] = useState<SheetKey>(null);
+  if (!usuario) return null;
+  const close = (o: boolean) => !o && setSheet(null);
+
+  const garantiaValor = pago.isLoading ? (
+    <Skeleton className="mt-1 h-3 w-40" />
+  ) : pago.data?.estado === "aprobado" ? (
+    `Pagado (${formatMXN(pago.data.total_centavos, { decimals: false })} MXN · Folio ${pago.data.folio})`
+  ) : (
+    "Sin pago registrado"
+  );
+
+  return (
+    <Page>
+      <PageHeader
+        title="Cuenta"
+        action={
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full"
+            onClick={() => setSheet("perfil")}
+          >
+            Editar
+          </Button>
+        }
+      />
+
+      <div className="mt-4 grid gap-6 md:mt-6 md:grid-cols-[320px_minmax(0,1fr)] md:items-start">
+        <section
+          className="flex flex-col items-center rounded-card text-center md:border md:border-border md:bg-card md:p-6 md:shadow-card"
+          aria-label="Perfil"
+        >
+          <div className="relative">
+            <Avatar
+              nickname={usuario.nickname}
+              src={usuario.avatar_url}
+              size={88}
+              className="shadow-card ring-4 ring-white"
+            />
+            <button
+              aria-label="Editar perfil"
+              onClick={() => setSheet("perfil")}
+              className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full border-2 border-white bg-foreground text-white"
+            >
+              <Pencil size={14} />
+            </button>
+          </div>
+          <button
+            onClick={() => setSheet("perfil")}
+            className="mt-3 flex items-center gap-[6px] text-[20px] font-extrabold tracking-[-0.02em]"
+          >
+            {usuario.nickname} <Pencil size={15} className="text-muted-foreground" aria-hidden />
+          </button>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+            <Badge variant="success">{CARRERAS[usuario.carrera].licenciatura}</Badge>
+            <span className="inline-flex items-center gap-1 font-mono text-[12px] font-semibold tabular-nums text-muted-foreground">
+              <Lock size={11} aria-hidden /> No. Cuenta: {usuario.numero_cuenta_enmascarado}
+            </span>
+          </div>
+          {usuario.bio && <p className="mt-3 text-[14px] leading-[20px]">{usuario.bio}</p>}
+          <dl className="mt-4 grid w-full grid-cols-3 divide-x divide-border rounded-card border border-border bg-card py-3 shadow-card md:shadow-none">
+            {[
+              [String(usuario.total_plantas).padStart(2, "0"), "Macetas"],
+              [usuario.puntos_aportados, "Puntos"],
+              [usuario.total_votos_emitidos, "Votos"],
+            ].map(([v, l]) => (
+              <div key={String(l)} className="flex flex-col-reverse">
+                <dt className="text-[12px] font-medium text-muted-foreground">{l}</dt>
+                <dd className="text-[20px] font-extrabold tabular-nums">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <div>
+          <p className="mb-2 px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+            Estado y datos
+          </p>
+          <div className="divide-y divide-border overflow-hidden rounded-card border border-border bg-card shadow-card">
+            <Row
+              tile="#15803D"
+              icon={<ShieldCheck size={17} />}
+              title="Estado de Garantía"
+              value={garantiaValor}
+              valueClass={
+                pago.data?.estado === "aprobado"
+                  ? "text-primary font-semibold"
+                  : "text-muted-foreground"
+              }
+              onClick={() => setSheet("garantia")}
+            />
+            <Row
+              tile="#475569"
+              icon={<Scale size={17} />}
+              title="Reglamento de Sanciones"
+              value={`${usuario.amonestaciones} amonestaciones · ${usuario.amonestaciones === 0 ? "Limpio" : "Con observaciones"}`}
+              valueClass={usuario.amonestaciones ? "text-crimson" : undefined}
+              onClick={() => setSheet("reglamento")}
+            />
+            <Row
+              tile="linear-gradient(135deg,#F59E0B,#DB2777 55%,#7C3AED)"
+              icon={<Download size={17} />}
+              title="Exportar mi Carta Coleccionable"
+              value="Descargar PNG para Instagram Stories"
+              onClick={() => setSheet("exportar")}
+            />
+          </div>
+          <div className="mt-4 overflow-hidden rounded-card border border-border bg-card shadow-card">
+            <button
+              disabled={cerrar.isPending}
+              onClick={async () => {
+                await cerrar.mutateAsync(undefined).catch(() => {});
+                navigate("/registro", { replace: true });
+              }}
+              className="flex w-full items-center gap-3 px-4 py-[14px] text-[15px] font-semibold text-crimson transition hover:bg-crimson-tint"
+            >
+              <LogOut size={18} aria-hidden /> Cerrar Sesión
+            </button>
+          </div>
+          <p className="mt-4 text-center text-[11px] text-muted-foreground md:text-left">
+            Semillas de Bondad v1.0 · PWA de código abierto
+          </p>
+        </div>
+      </div>
+
+      <EditarPerfilSheet
+        open={sheet === "perfil"}
+        onOpenChange={close}
+        usuario={usuario}
+        onSave={(p) => actualizar.mutateAsync(p)}
+        guardando={actualizar.isPending}
+      />
+      <GarantiaSheet open={sheet === "garantia"} onOpenChange={close} pago={pago.data} />
+      <ReglamentoSheet
+        open={sheet === "reglamento"}
+        onOpenChange={close}
+        amonestaciones={usuario.amonestaciones}
+      />
+      <ExportCartaSheet
+        open={sheet === "exportar"}
+        onOpenChange={close}
+        plantas={plantas.data}
+        isLoading={plantas.isLoading}
+      />
+    </Page>
+  );
+}

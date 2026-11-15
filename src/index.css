@@ -1,0 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap");
+@import "tailwindcss";
+
+/*
+ * Semillas de Bondad — "Eco-Fintech Editorial" tokens.
+ * shadcn/ui-compatible CSS variables (drop-in for `npx shadcn add …`)
+ * plus brand tokens.
+ */
+:root {
+  --radius: 14px;
+  --background: #f8f9f7;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #15803d;
+  --primary-foreground: #ffffff;
+  --secondary: #eceeea;
+  --secondary-foreground: #111827;
+  --muted: #f1f3ef;
+  --muted-foreground: #6b7280;
+  --accent: #ecf7ef;
+  --accent-foreground: #166534;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e4e7e2;
+  --input: #e4e7e2;
+  --ring: #15803d;
+  --chart-1: #15803d;
+  --chart-2: #4ade80;
+  --chart-3: #86efac;
+  --chart-4: #bbf7d0;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --tabbar-h: calc(58px + var(--safe-bottom));
+}
+
+@theme inline {
+  --font-sans: "Inter", -apple-system, "SF Pro Display", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+
+  /* Brand */
+  --color-brand: #15803d;
+  --color-brand-deep: #166534;
+  --color-brand-tint: #ecf7ef;
+  --color-leaf: #22c55e;
+  --color-obsidian: #0f172a;
+  --color-gold: #d97706;
+  --color-crimson: #dc2626;
+  --color-crimson-tint: #fef2f2;
+  --color-mp: #009ee3;
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: 20px;
+  --radius-card: 20px;
+  --radius-btn: 14px;
+  --radius-collectible: 24px;
+
+  --shadow-card: 0 4px 20px rgba(16, 24, 20, 0.05);
+  --shadow-fab: 0 10px 24px -6px rgba(21, 128, 61, 0.55);
+  --shadow-float: 0 16px 40px -12px rgba(16, 24, 20, 0.25);
+
+  --animate-laser: laser 2.4s ease-in-out infinite alternate;
+  --animate-shimmer: shimmer 7s linear infinite;
+
+  @keyframes laser {
+    from {
+      top: 6%;
+    }
+    to {
+      top: 90%;
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 200% 50%;
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility pb-safe {
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Printable QR ticket: only `.print-area` is visible on paper. */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+  .print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: auto !important;
+    height: fit-content !important;
+    box-shadow: none !important;
+  }
+}

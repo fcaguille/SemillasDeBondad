@@ -1,0 +1,15 @@
+{
+  "description": "Registra macetas recicladas, califica con QR y haz ganar a tu carrera en el Reto Ecosustentable de la FCA-UNAM.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "title": "Semillas de Bondad · FCA UNAM",
+  "language": "es",
+  "icons": {
+    "icon": "/favicon.png"
+  }
+}
