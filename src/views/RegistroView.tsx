@@ -1,10 +1,21 @@
 import { useState, type FormEvent } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
-import { ArrowUpRight, ChevronDown, Eye, EyeOff, Hash, Loader2, Lock } from "lucide-react";
+import {
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Hash,
+  Loader2,
+  Lock,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { BrandMark, GithubMark } from "@/components/brand/BrandMark";
 import { CollectiblePlantCard } from "@/components/CollectiblePlantCard";
 import { EscrowSummary } from "@/components/auth/EscrowSummary";
-import { FullScreenLoader } from "@/components/common/States";
+import { ActivarGarantiaButton } from "@/components/auth/Garantia";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -13,14 +24,12 @@ import { SegmentedControl } from "@/components/ui/segmented-control";
 import { PLANTA_EJEMPLO } from "@/content/showcase";
 import {
   useCerrarSesion,
-  useCrearPreferenciaPago,
   useCuotaEntrada,
   useIniciarSesion,
   useRegistrar,
   useSesion,
 } from "@/hooks/useSemillas";
 import { mensajeDeError } from "@/lib/errors";
-import { redirigirACheckout } from "@/lib/mercadoPago";
 import { formatMXN } from "@/lib/utils";
 import { DEMO_LOGIN, LINKS } from "@/services/config";
 import { CARRERAS, type Carrera } from "@/types/domain";
@@ -62,19 +71,13 @@ export function RegistroView() {
   const cuota = useCuotaEntrada();
   const registrar = useRegistrar();
   const login = useIniciarSesion();
-  const preferencia = useCrearPreferenciaPago();
   const cerrar = useCerrarSesion();
 
-  if (isLoading) return <FullScreenLoader />;
-  const usuario = sesion?.usuario;
+  // Non-blocking: the form renders right away while the session resolves.
+  const usuario = isLoading ? undefined : sesion?.usuario;
   if (usuario?.estado === "activa") return <Navigate to={next} replace />;
   const pendiente = usuario?.estado === "pendiente_pago";
-  const ocupado = registrar.isPending || login.isPending || preferencia.isPending;
-
-  const pagar = async () => {
-    const { init_point } = await preferencia.mutateAsync(undefined);
-    redirigirACheckout(init_point);
-  };
+  const ocupado = registrar.isPending || login.isPending;
 
   const onSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
@@ -91,10 +94,13 @@ export function RegistroView() {
           password,
           acepta_terminos: true,
         });
-        await pagar();
+        // The session is now "pendiente_pago": the view switches to the pay / free choice.
+        window.scrollTo({ top: 0 });
       } else {
         const s = await login.mutateAsync({ numero_cuenta: numero, password });
-        if (s.usuario.estado === "activa") navigate(next, { replace: true });
+        if (s.usuario.estado === "suspendida")
+          setErrorGeneral("Tu cuenta está suspendida. Contacta al comité del reto.");
+        else navigate(next, { replace: true });
       }
     } catch (err) {
       setErrorGeneral(mensajeDeError(err));
@@ -123,7 +129,9 @@ export function RegistroView() {
         </p>
       </aside>
 
-      <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col px-6 pb-[calc(140px+var(--safe-bottom))] pt-[calc(20px+var(--safe-top))] md:justify-center md:pb-12">
+      <div
+        className={`mx-auto flex min-h-dvh w-full max-w-[480px] flex-col px-6 pt-[calc(20px+var(--safe-top))] md:justify-center md:pb-12 ${pendiente ? "pb-[calc(210px+var(--safe-bottom))]" : "pb-[calc(140px+var(--safe-bottom))]"}`}
+      >
         <header className="flex items-center gap-3">
           <BrandMark size={52} />
           <div>
@@ -137,37 +145,102 @@ export function RegistroView() {
         </header>
 
         {pendiente ? (
-          <section className="mt-8 flex flex-col gap-4">
+          <section className="mt-8 flex flex-col gap-4" aria-labelledby="elige-title">
             <div>
-              <p className="text-[13px] font-semibold text-primary">Falta un paso</p>
-              <h2 className="text-[24px] font-extrabold leading-tight tracking-[-0.02em]">
-                Activa tu cuenta, {usuario.nickname}
+              <p className="text-[13px] font-semibold text-primary">Cuenta creada</p>
+              <h2
+                id="elige-title"
+                className="text-[24px] font-extrabold leading-tight tracking-[-0.02em]"
+              >
+                ¡Bienvenido, {usuario.nickname}! ¿Cómo quieres participar?
               </h2>
               <p className="mt-1 text-[14px] leading-[20px] text-muted-foreground">
-                Tu aportación entra al pozo común en custodia. Al cierre se reparte según el Índice
-                Ecosustentable de cada carrera.
+                Puedes entrar gratis a calificar macetas y activar tu garantía cuando quieras.
               </p>
             </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-card border-2 border-mp/40 bg-[#F2FAFE] p-4">
+                <p className="flex items-center gap-[6px] text-[13px] font-extrabold text-[#00669A]">
+                  <ShieldCheck size={15} aria-hidden /> Acceso Total
+                </p>
+                <ul className="mt-2 grid gap-[6px] text-[13px] leading-[18px]">
+                  {[
+                    "Crea macetas con carta coleccionable y QR",
+                    "Suma puntos al Índice de tu carrera",
+                    "Levanta reportes de anomalías",
+                    "Compite por el pozo común",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-2">
+                      <Check
+                        size={14}
+                        strokeWidth={2.8}
+                        className="mt-[2px] shrink-0 text-mp"
+                        aria-hidden
+                      />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-card border border-border bg-card p-4">
+                <p className="flex items-center gap-[6px] text-[13px] font-extrabold">
+                  <Sparkles size={15} className="text-muted-foreground" aria-hidden /> Modo Gratuito
+                </p>
+                <ul className="mt-2 grid gap-[6px] text-[13px] leading-[18px]">
+                  <li className="flex gap-2">
+                    <Check
+                      size={14}
+                      strokeWidth={2.8}
+                      className="mt-[2px] shrink-0 text-primary"
+                      aria-hidden
+                    />
+                    Escanea QR y califica macetas
+                  </li>
+                  <li className="flex gap-2">
+                    <Check
+                      size={14}
+                      strokeWidth={2.8}
+                      className="mt-[2px] shrink-0 text-primary"
+                      aria-hidden
+                    />
+                    Sigue el ranking en vivo
+                  </li>
+                  <li className="flex gap-2 text-muted-foreground">
+                    <Lock size={13} strokeWidth={2.4} className="mt-[3px] shrink-0" aria-hidden />
+                    Sin crear macetas ni premio
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <EscrowSummary cuota={cuota.data} />
-            {errorGeneral && <FieldMessage error>{errorGeneral}</FieldMessage>}
-            <div className="fixed inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background from-70% to-background/0 px-6 pb-[calc(20px+var(--safe-bottom))] pt-6 md:static md:bg-none md:p-0">
-              <div className="mx-auto max-w-[432px]">
-                <Button
-                  variant="mp"
-                  size="lg"
-                  className="h-auto min-h-14 w-full gap-[6px] whitespace-normal px-3 py-2 text-center text-[15px] leading-tight tracking-[-0.01em]"
-                  disabled={preferencia.isPending}
-                  onClick={() => pagar().catch((e) => setErrorGeneral(mensajeDeError(e)))}
+            {errorGeneral && (
+              <p
+                role="alert"
+                className="rounded-btn bg-crimson-tint px-4 py-3 text-[14px] font-medium text-crimson"
+              >
+                {errorGeneral}
+              </p>
+            )}
+            <div className="fixed inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background from-75% to-background/0 px-6 pb-[calc(16px+var(--safe-bottom))] pt-6 md:static md:bg-none md:p-0">
+              <div className="mx-auto flex max-w-[432px] flex-col gap-2">
+                <ActivarGarantiaButton
+                  className="min-h-14 w-full px-3 text-[15px]"
+                  onFallo={setErrorGeneral}
                 >
-                  {preferencia.isPending ? (
-                    <Loader2 size={16} className="animate-spin" />
-                  ) : (
-                    <Lock size={16} strokeWidth={2.4} />
-                  )}
-                  Pagar {total} con Mercado Pago y Activar
+                  Pagar {total} con Mercado Pago (Acceso Total + Premio)
+                </ActivarGarantiaButton>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="min-h-12 w-full text-[15px]"
+                  onClick={() => navigate(next, { replace: true })}
+                >
+                  Continuar en Modo Gratuito (Solo Votar)
                 </Button>
                 <button
-                  className="mt-2 w-full text-center text-[13px] font-semibold text-muted-foreground underline-offset-2 hover:underline"
+                  className="mt-1 w-full text-center text-[13px] font-semibold text-muted-foreground underline-offset-2 hover:underline"
                   onClick={() => cerrar.mutate(undefined)}
                 >
                   Usar otra cuenta
@@ -311,7 +384,11 @@ export function RegistroView() {
                       <FieldMessage error>{errores.acepta}</FieldMessage>
                     </div>
                   </div>
-                  <EscrowSummary cuota={cuota.data} />
+                  <p className="flex items-start gap-2 rounded-btn bg-secondary px-3 py-[10px] text-[13px] leading-[18px] text-muted-foreground">
+                    <ShieldCheck size={16} className="mt-[1px] shrink-0 text-primary" aria-hidden />
+                    Al crear tu cuenta eliges: activar la garantía de {total} MXN (acceso total y
+                    premio) o entrar gratis a calificar macetas.
+                  </p>
                 </>
               )}
               {errorGeneral && (
@@ -332,20 +409,14 @@ export function RegistroView() {
                     <Button
                       type="submit"
                       form="auth-form"
-                      variant="mp"
                       size="lg"
-                      className="h-auto min-h-14 w-full gap-[6px] whitespace-normal px-3 py-2 text-center text-[15px] leading-tight tracking-[-0.01em]"
+                      className="w-full"
                       disabled={ocupado}
                     >
-                      {ocupado ? (
-                        <Loader2 size={16} className="animate-spin" />
-                      ) : (
-                        <Lock size={16} strokeWidth={2.4} />
-                      )}
-                      Pagar {total} con Mercado Pago y Activar
+                      {ocupado && <Loader2 size={18} className="animate-spin" />} Crear mi cuenta
                     </Button>
                     <p className="mt-2 text-center text-[11px] font-medium text-muted-foreground">
-                      Pago cifrado y procesado por Mercado Pago
+                      Sin pago para empezar · la garantía es opcional
                     </p>
                   </>
                 ) : (

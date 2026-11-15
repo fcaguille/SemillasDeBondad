@@ -5,17 +5,35 @@
   "description": "Registra macetas recicladas, califica con QR y haz ganar a tu carrera en el Reto Ecosustentable de la FCA-UNAM.",
   "lang": "es-MX",
   "dir": "ltr",
-  "start_url": "./impacto?source=pwa",
+  "start_url": "./#/impacto",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
   "background_color": "#F8F9F7",
   "theme_color": "#F8F9F7",
-  "categories": ["education", "lifestyle", "social"],
+  "categories": [
+    "education",
+    "lifestyle",
+    "social"
+  ],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "icons/maskable-192.png",
       "sizes": "192x192",
@@ -28,26 +46,46 @@
       "type": "image/png",
       "purpose": "maskable"
     },
-    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
   ],
   "shortcuts": [
     {
       "name": "Escanear QR",
       "short_name": "Escanear",
-      "url": "./escanear?source=shortcut",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+      "url": "./#/escanear",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Registrar maceta",
       "short_name": "Registrar",
-      "url": "./crear-maceta?source=shortcut",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+      "url": "./#/crear-maceta",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Ranking en vivo",
       "short_name": "Ranking",
-      "url": "./ranking?source=shortcut",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+      "url": "./#/ranking",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
   "screenshots": [

@@ -1,11 +1,11 @@
 import { Link, NavLink } from "react-router";
 import { motion } from "motion/react";
-import { Plus } from "lucide-react";
+import { Lock, Plus } from "lucide-react";
 import { NAV_ITEMS } from "./nav";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { Avatar } from "@/components/common/Avatar";
 import { Button } from "@/components/ui/button";
-import { CARRERAS, type Usuario } from "@/types/domain";
+import { CARRERAS, tieneGarantia, type Usuario } from "@/types/domain";
 import { cn } from "@/lib/utils";
 
 /** Desktop (≥768px) Apple-style sidebar, 240px. */
@@ -20,11 +20,19 @@ export function Sidebar({ usuario }: { usuario: Usuario | null }) {
         </div>
       </Link>
 
-      <Button asChild className="mt-6 w-full">
-        <Link to="/crear-maceta">
-          <Plus size={18} strokeWidth={2.6} /> Registrar maceta
-        </Link>
-      </Button>
+      {usuario && !tieneGarantia(usuario) ? (
+        <Button asChild variant="outline" className="mt-6 w-full text-muted-foreground">
+          <Link to="/crear-maceta" title="Activa tu garantía para crear macetas">
+            <Lock size={16} strokeWidth={2.4} /> Registrar maceta
+          </Link>
+        </Button>
+      ) : (
+        <Button asChild className="mt-6 w-full">
+          <Link to="/crear-maceta">
+            <Plus size={18} strokeWidth={2.6} /> Registrar maceta
+          </Link>
+        </Button>
+      )}
 
       <nav aria-label="Navegación principal" className="mt-6">
         <ul className="flex flex-col gap-1">

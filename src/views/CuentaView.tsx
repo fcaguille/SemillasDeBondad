@@ -1,8 +1,19 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
-import { ChevronRight, Download, Lock, LogOut, Pencil, Scale, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  ChevronRight,
+  Download,
+  Lock,
+  LogOut,
+  Pencil,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { Page, PageHeader } from "@/components/layout/AppShell";
 import { Avatar } from "@/components/common/Avatar";
+import { ActivarGarantiaButton, EstadoCuentaBadge } from "@/components/auth/Garantia";
 import {
   EditarPerfilSheet,
   ExportCartaSheet,
@@ -20,7 +31,7 @@ import {
   useUsuarioActual,
 } from "@/hooks/useSemillas";
 import { formatMXN } from "@/lib/utils";
-import { CARRERAS } from "@/types/domain";
+import { CARRERAS, tieneGarantia } from "@/types/domain";
 
 function Row({
   icon,
@@ -74,9 +85,12 @@ export function CuentaView() {
     <Skeleton className="mt-1 h-3 w-40" />
   ) : pago.data?.estado === "aprobado" ? (
     `Pagado (${formatMXN(pago.data.total_centavos, { decimals: false })} MXN · Folio ${pago.data.folio})`
+  ) : pago.data?.estado === "pendiente" ? (
+    "Pago en revisión por Mercado Pago"
   ) : (
-    "Sin pago registrado"
+    "Sin garantía · Modo Gratuito"
   );
+  const garantia = tieneGarantia(usuario);
 
   return (
     <Page>
@@ -120,6 +134,7 @@ export function CuentaView() {
           >
             {usuario.nickname} <Pencil size={15} className="text-muted-foreground" aria-hidden />
           </button>
+          <EstadoCuentaBadge usuario={usuario} className="mt-2" />
           <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
             <Badge variant="success">{CARRERAS[usuario.carrera].licenciatura}</Badge>
             <span className="inline-flex items-center gap-1 font-mono text-[12px] font-semibold tabular-nums text-muted-foreground">
@@ -142,6 +157,42 @@ export function CuentaView() {
         </section>
 
         <div>
+          {!garantia && usuario.estado !== "suspendida" && (
+            <section
+              aria-labelledby="upgrade-title"
+              className="mb-6 rounded-card border border-[#BDE5F7] bg-gradient-to-br from-[#F2FAFE] to-card p-5 shadow-card"
+            >
+              <Badge variant="info">
+                <Sparkles size={13} aria-hidden /> Modo Gratuito · Solo Votación
+              </Badge>
+              <h2
+                id="upgrade-title"
+                className="mt-3 text-[18px] font-extrabold leading-tight tracking-[-0.02em]"
+              >
+                Hoy puedes calificar macetas. Con la garantía, también compites.
+              </h2>
+              <ul className="mt-3 grid gap-[6px] text-[13px] font-medium">
+                {[
+                  [true, "Escanear QR y calificar macetas (1 a 5 estrellas)"],
+                  [false, "Crear macetas con carta coleccionable"],
+                  [false, "Sumar puntos al Índice de tu carrera"],
+                  [false, "Levantar reportes y competir por el pozo"],
+                ].map(([ok, t]) => (
+                  <li key={String(t)} className="flex items-center gap-2">
+                    {ok ? (
+                      <Check size={15} strokeWidth={2.6} className="text-primary" aria-hidden />
+                    ) : (
+                      <Lock size={14} strokeWidth={2.4} className="text-[#00669A]" aria-hidden />
+                    )}
+                    <span className={ok ? undefined : "text-muted-foreground"}>{t}</span>
+                  </li>
+                ))}
+              </ul>
+              <ActivarGarantiaButton className="mt-4 w-full text-[15px]">
+                Activar Garantía ($16 MXN)
+              </ActivarGarantiaButton>
+            </section>
+          )}
           <p className="mb-2 px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
             Estado y datos
           </p>
@@ -199,7 +250,18 @@ export function CuentaView() {
         onSave={(p) => actualizar.mutateAsync(p)}
         guardando={actualizar.isPending}
       />
-      <GarantiaSheet open={sheet === "garantia"} onOpenChange={close} pago={pago.data} />
+      <GarantiaSheet
+        open={sheet === "garantia"}
+        onOpenChange={close}
+        pago={pago.data}
+        accion={
+          garantia ? undefined : (
+            <ActivarGarantiaButton className="mt-4 w-full text-[15px]">
+              Activar Garantía ($16 MXN)
+            </ActivarGarantiaButton>
+          )
+        }
+      />
       <ReglamentoSheet
         open={sheet === "reglamento"}
         onOpenChange={close}

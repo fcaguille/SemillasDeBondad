@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { ChevronRight, Sprout } from "lucide-react";
+import { ChevronRight, ScanQrCode, Sprout } from "lucide-react";
 import { Page } from "@/components/layout/AppShell";
 import { Avatar } from "@/components/common/Avatar";
+import { EstadoCuentaBadge, ModoGratuitoCard } from "@/components/auth/Garantia";
 import { EmptyState, ErrorState } from "@/components/common/States";
 import { HeroActionCard, KpiCard, PlantaListItem } from "@/components/impacto/ImpactoCards";
 import { QrTicketSheet } from "@/components/planta/QrTicket";
@@ -12,13 +13,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMisPlantas, useUsuarioActual } from "@/hooks/useSemillas";
 import { formatFecha } from "@/lib/utils";
-import { CARRERAS, type Planta } from "@/types/domain";
+import { CARRERAS, tieneGarantia, type Planta } from "@/types/domain";
 
 export function ImpactoView() {
   const { data: usuario } = useUsuarioActual();
   const plantas = useMisPlantas();
   const [qr, setQr] = useState<Planta | null>(null);
   if (!usuario) return null;
+  const garantia = tieneGarantia(usuario);
 
   const hoy = formatFecha(new Date().toISOString(), {
     weekday: "long",
@@ -37,7 +39,7 @@ export function ImpactoView() {
             Hola, {usuario.nickname}
           </h1>
           <div className="mt-2 flex flex-wrap gap-2">
-            <Badge variant="success">Cuenta Activa ✓</Badge>
+            <EstadoCuentaBadge usuario={usuario} />
             <Badge>{CARRERAS[usuario.carrera].nombre}</Badge>
           </div>
         </div>
@@ -52,7 +54,7 @@ export function ImpactoView() {
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <KpiCard usuario={usuario} />
-        <HeroActionCard />
+        {garantia ? <HeroActionCard /> : <ModoGratuitoCard />}
       </div>
 
       <section className="mt-8" aria-labelledby="activas">
@@ -76,16 +78,29 @@ export function ImpactoView() {
           ) : plantas.error ? (
             <ErrorState error={plantas.error} onRetry={plantas.refetch} />
           ) : !plantas.data?.length ? (
-            <EmptyState
-              icon={<Sprout />}
-              title="Aún no registras macetas"
-              description="Arma tu maceta con material reciclado, tómale foto y genera su QR coleccionable."
-              action={
-                <Button asChild>
-                  <Link to="/crear-maceta">Registrar mi primera maceta</Link>
-                </Button>
-              }
-            />
+            garantia ? (
+              <EmptyState
+                icon={<Sprout />}
+                title="Aún no registras macetas"
+                description="Arma tu maceta con material reciclado, tómale foto y genera su QR coleccionable."
+                action={
+                  <Button asChild>
+                    <Link to="/crear-maceta">Registrar mi primera maceta</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={<ScanQrCode />}
+                title="Empieza calificando macetas"
+                description="En Modo Gratuito puedes escanear el QR de cualquier maceta del campus y darle de 1 a 5 estrellas."
+                action={
+                  <Button asChild variant="outline">
+                    <Link to="/escanear">Escanear un QR</Link>
+                  </Button>
+                }
+              />
+            )
           ) : (
             <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {plantas.data.map((p, i) => (

@@ -155,6 +155,14 @@ async function requireUser(c: Context) {
   if (!u) throw new HttpError("no_autenticado", "Tu sesión expiró. Inicia sesión de nuevo.", 401);
   return u;
 }
+/** Free tier ("Modo Gratuito"): any signed-in, non-suspended account may vote. */
+async function requireVotante(c: Context) {
+  const u = await requireUser(c);
+  if (u.estado === "suspendida")
+    throw new HttpError("suspendida", "Tu cuenta está suspendida. Contacta al comité del reto.", 403);
+  return u;
+}
+/** Paid escrow required: create planters, validate teammates, file reports. */
 async function requireActive(c: Context) {
   const u = await requireUser(c);
   if (u.estado === "suspendida")
@@ -162,7 +170,7 @@ async function requireActive(c: Context) {
   if (u.estado !== "activa")
     throw new HttpError(
       "pago_pendiente",
-      "Activa tu cuenta con la garantía de $16 MXN para continuar.",
+      "Modo Gratuito: activa tu garantía ($16 MXN) para crear macetas y levantar reportes.",
       402,
     );
   return u;
@@ -622,7 +630,7 @@ app.post(`${P}/plantas`, async (c) => {
 /* ------------------------------------------------------------------ */
 
 app.post(`${P}/plantas/:id/votos`, async (c) => {
-  const u = await requireActive(c);
+  const u = await requireVotante(c);
   const p = await getPlanta(c.req.param("id"));
   const { estrellas } = await body<{ estrellas?: number }>(c);
   if (!Number.isInteger(estrellas) || estrellas! < 1 || estrellas! > 5)

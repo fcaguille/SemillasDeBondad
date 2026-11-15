@@ -10,6 +10,7 @@
  */
 import type { SemillasApi } from "@/services/api";
 import { ApiError } from "@/lib/errors";
+import { externalReturnUrl } from "@/lib/utils";
 import {
   CARRERAS,
   MAX_INTEGRANTES,
@@ -344,7 +345,7 @@ function requireActive() {
   if (usr.estado !== "activa")
     throw new ApiError(
       "pago_pendiente",
-      "Activa tu cuenta con la garantía de $16 MXN para continuar.",
+      "Modo Gratuito: activa tu garantía ($16 MXN) para crear macetas y levantar reportes.",
       402,
     );
   return usr;
@@ -451,14 +452,13 @@ export const mockApi: SemillasApi = {
     const preferencia_id = rid("pref");
     const folio = `MP-${Math.floor(1000 + Math.random() * 9000)}`;
     // Real backend: POST https://api.mercadopago.com/checkout/preferences and return init_point.
-    const back = new URL(`${import.meta.env.BASE_URL}pago/retorno`, window.location.origin);
-    back.search = new URLSearchParams({
+    const init_point = externalReturnUrl("pago/retorno", {
       status: "approved",
       payment_id: folio,
       external_reference: usr.id,
       preference_id: preferencia_id,
-    }).toString();
-    return { preferencia_id, init_point: back.toString() };
+    });
+    return { preferencia_id, init_point };
   },
 
   async confirmarRetornoPago(input) {
@@ -589,7 +589,10 @@ export const mockApi: SemillasApi = {
 
   async votar({ planta_id, estrellas }) {
     await latency();
-    const usr = requireActive();
+    // Free tier ("Modo Gratuito"): any signed-in, non-suspended account may vote.
+    const usr = requireUser();
+    if (usr.estado === "suspendida")
+      throw new ApiError("suspendida", "Tu cuenta está suspendida.", 403);
     const p = db.plantas[planta_id];
     if (!p) throw new ApiError("no_encontrada", "Esta maceta no existe.", 404);
     if (p.creadores.some((c) => c.usuario_id === usr.id))

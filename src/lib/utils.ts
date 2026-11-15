@@ -60,5 +60,26 @@ export function parsePlantaId(raw: string): string | null {
   return m ? `SB-${m[1]}` : null;
 }
 
-export const plantaUrl = (id: string) =>
-  new URL(`${import.meta.env.BASE_URL}p/${id}`, window.location.origin).toString();
+/** Absolute URL of the app shell (index.html directory), without hash or query. */
+export function appBaseUrl(): string {
+  const { origin, pathname } = window.location;
+  return origin + pathname.replace(/[^/]*$/, "");
+}
+
+/** Absolute deep link in the app's hash-route format, e.g. https://host/#/p/SB-8492 */
+export const appUrl = (ruta: string) => `${appBaseUrl()}#/${ruta.replace(/^\/+/, "")}`;
+
+/** QR / share URL for a planter. parsePlantaId() accepts both this and legacy /p/ links. */
+export const plantaUrl = (id: string) => appUrl(`p/${id}`);
+
+/**
+ * Return URL for external redirects (Mercado Pago back_urls). Uses a query param
+ * instead of a hash because providers append their own query string; the boot
+ * script in index.html turns ?ruta=… into the matching hash route.
+ */
+export function externalReturnUrl(ruta: string, params: Record<string, string> = {}): string {
+  const url = new URL(appBaseUrl());
+  url.searchParams.set("ruta", ruta.replace(/^\/+/, ""));
+  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+  return url.toString();
+}

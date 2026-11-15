@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useNavigate } from "react-router";
-import { Download, Loader2, X } from "lucide-react";
+import { Check, Download, Loader2, X } from "lucide-react";
+import { ModoGratuitoCard } from "@/components/auth/Garantia";
 import { PhotoCaptureSlot } from "@/components/crear/PhotoCaptureSlot";
 import { TeamBuilder } from "@/components/crear/TeamBuilder";
 import { QrTicket, QrTicketSheet } from "@/components/planta/QrTicket";
@@ -16,7 +17,7 @@ import {
 } from "@/hooks/useSemillas";
 import { mensajeDeError } from "@/lib/errors";
 import { cn } from "@/lib/utils";
-import type { CompaneroValidado, Planta } from "@/types/domain";
+import { tieneGarantia, type CompaneroValidado, type Planta } from "@/types/domain";
 
 function Step({
   n,
@@ -67,6 +68,50 @@ export function CrearMacetaView() {
   const nombreOk = nombre.trim().length >= 3;
   const pasos = [!!foto, nombreOk, !!creada];
   const cerrar = () => (window.history.length > 1 ? navigate(-1) : navigate("/impacto"));
+
+  // Free tier: creating planters requires the paid escrow.
+  if (!tieneGarantia(usuario) && !creada) {
+    return (
+      <div className="min-h-dvh bg-[#0B100D] pt-[calc(10px+var(--safe-top))] md:bg-transparent md:px-10 md:py-10">
+        <div className="relative mx-auto min-h-[calc(100dvh-10px-var(--safe-top))] max-w-2xl rounded-t-[28px] bg-background md:min-h-0 md:rounded-[28px] md:border md:border-border md:bg-card md:shadow-card">
+          <div className="flex justify-center pt-2 md:hidden" aria-hidden>
+            <span className="h-[5px] w-9 rounded-full bg-[#CDD2CB]" />
+          </div>
+          <header className="flex items-center justify-between px-6 pb-3 pt-2 md:pt-6">
+            <h1 className="text-[20px] font-extrabold tracking-[-0.02em] md:text-[24px]">
+              Nueva Creación
+            </h1>
+            <button
+              onClick={cerrar}
+              aria-label="Cerrar"
+              className="grid size-11 place-items-center rounded-full bg-secondary"
+            >
+              <X size={20} strokeWidth={2.4} />
+            </button>
+          </header>
+          <div className="px-6 pb-[calc(32px+var(--safe-bottom))] md:pb-6">
+            <ModoGratuitoCard
+              title="Activa tu garantía para registrar macetas"
+              extra={
+                <ul className="mt-4 grid gap-2 text-[13px] font-medium">
+                  {[
+                    "Carta coleccionable con QR para tu maceta",
+                    "Cada estrella suma puntos al Índice de tu carrera",
+                    "Participas en el reparto del pozo común",
+                  ].map((t) => (
+                    <li key={t} className="flex items-center gap-2">
+                      <Check size={15} strokeWidth={2.6} className="text-primary" aria-hidden />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              }
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();

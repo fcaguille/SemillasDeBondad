@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { ArrowLeft, Share, Sprout, TriangleAlert } from "lucide-react";
+import { ArrowLeft, Lock, Share, Sprout, TriangleAlert } from "lucide-react";
 import { CollectiblePlantCard, CARD_H } from "@/components/CollectiblePlantCard";
 import { EmptyState, ErrorState } from "@/components/common/States";
 import { EstadoPlantaBadge } from "@/components/planta/EstadoPlantaBadge";
@@ -19,15 +19,19 @@ import {
 } from "@/hooks/useSemillas";
 import { mensajeDeError } from "@/lib/errors";
 import { formatFecha, plantaUrl } from "@/lib/utils";
-import type { MotivoReporte } from "@/types/domain";
+import { puedeVotar, tieneGarantia, type MotivoReporte } from "@/types/domain";
 
-/** Public QR destination: /p/{id_planta}. Works signed-out (read-only). */
+const REPORTE_BLOQUEADO = "Solo cuentas con garantía activa pueden levantar reportes.";
+
+/** Public QR destination: #/p/{id_planta}. Signed-out: read-only. Free tier: vote. Paid: vote + report. */
 export function PlantaView() {
   const { idPlanta = "" } = useParams();
   const id = idPlanta.toUpperCase();
   const navigate = useNavigate();
   const { data: usuario } = useUsuarioActual();
-  const autenticado = usuario?.estado === "activa";
+  // Free ("Modo Gratuito") and paid accounts can vote; only paid accounts can report.
+  const autenticado = puedeVotar(usuario);
+  const garantia = tieneGarantia(usuario);
   const planta = usePlanta(id);
   const permisos = usePermisosPlanta(id, autenticado);
   const votar = useVotar();
@@ -68,8 +72,10 @@ export function PlantaView() {
   };
 
   const p = planta.data;
-  const puedeReportar =
-    autenticado && !permisos.data?.es_creador && !permisos.data?.reporte_emitido;
+  const reporteDisponible =
+    autenticado && !!permisos.data && !permisos.data.es_creador && !permisos.data.reporte_emitido;
+  const puedeReportar = reporteDisponible && garantia;
+  const reporteBloqueado = reporteDisponible && !garantia;
 
   return (
     <div className="min-h-dvh bg-[radial-gradient(120%_60%_at_50%_25%,#EAF6EC_0%,var(--background)_60%)] pb-[calc(24px+var(--safe-bottom))]">
@@ -156,6 +162,24 @@ export function PlantaView() {
                   >
                     <TriangleAlert size={16} /> Reportar anomalía física
                   </Button>
+                ) : reporteBloqueado ? (
+                  <div className="flex min-w-0 flex-col items-start" title={REPORTE_BLOQUEADO}>
+                    <Button
+                      variant="destructive-ghost"
+                      className="px-2"
+                      disabled
+                      aria-describedby="reporte-bloqueado"
+                    >
+                      <TriangleAlert size={16} /> Reportar anomalía física
+                      <Lock size={13} strokeWidth={2.4} aria-hidden />
+                    </Button>
+                    <p
+                      id="reporte-bloqueado"
+                      className="px-2 text-[11px] font-medium leading-[15px] text-muted-foreground"
+                    >
+                      {REPORTE_BLOQUEADO}
+                    </p>
+                  </div>
                 ) : (
                   <span className="px-2 text-[12px] font-medium text-muted-foreground">
                     {permisos.data?.reporte_emitido

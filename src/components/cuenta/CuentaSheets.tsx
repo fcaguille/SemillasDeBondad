@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check, Download, Loader2 } from "lucide-react";
 import { BotanicalArt } from "@/components/botanical/BotanicalArt";
 import { StoryExport } from "@/components/cuenta/StoryExport";
@@ -179,7 +179,8 @@ export function GarantiaSheet({
   open,
   onOpenChange,
   pago,
-}: SheetProps & { pago: PagoEscrow | null | undefined }) {
+  accion,
+}: SheetProps & { pago: PagoEscrow | null | undefined; accion?: ReactNode }) {
   return (
     <Sheet
       open={open}
@@ -189,7 +190,7 @@ export function GarantiaSheet({
     >
       {!pago ? (
         <p className="rounded-btn bg-muted p-4 text-[14px] text-muted-foreground">
-          No encontramos un pago asociado a tu cuenta.
+          Tu cuenta está en Modo Gratuito: aún no hay un pago de garantía asociado.
         </p>
       ) : (
         <dl className="divide-y divide-border rounded-card border border-border text-[14px] tabular-nums">
@@ -218,6 +219,7 @@ export function GarantiaSheet({
           ))}
         </dl>
       )}
+      {accion}
     </Sheet>
   );
 }

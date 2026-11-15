@@ -4,6 +4,7 @@
  */
 import type { SemillasApi } from "@/services/api";
 import { ApiError } from "@/lib/errors";
+import { externalReturnUrl } from "@/lib/utils";
 import type {
   CarreraStats,
   CompaneroValidado,
@@ -20,8 +21,35 @@ import type {
 } from "@/types/domain";
 import { API_BASE, SUPABASE_ANON_KEY, emailDeCuenta, supabase } from "./supabaseClient";
 
+/** Rejects after `ms` so a stuck network/auth call can never block the UI forever. */
+function conTiempoLimite<T>(promesa: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(
+      () =>
+        reject(
+          new ApiError(
+            "tiempo_agotado",
+            "El servidor está tardando en responder. Revisa tu conexión e inténtalo de nuevo.",
+            0,
+          ),
+        ),
+      ms,
+    );
+    promesa.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      },
+    );
+  });
+}
+
 async function token(): Promise<string | null> {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await conTiempoLimite(supabase.auth.getSession(), 8_000);
   return data.session?.access_token ?? null;
 }
 
@@ -29,15 +57,19 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
   const jwt = (await token()) ?? SUPABASE_ANON_KEY;
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}${path}`, {
-      method,
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
-      },
-      body: body !== undefined ? JSON.stringify(body) : undefined,
-    });
-  } catch {
+    res = await conTiempoLimite(
+      fetch(`${API_BASE}${path}`, {
+        method,
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+        },
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+      }),
+      20_000,
+    );
+  } catch (e) {
+    if (e instanceof ApiError) throw e;
     throw new ApiError(
       "sin_conexion",
       "No pudimos conectar con el servidor. Revisa tu internet e inténtalo de nuevo.",
@@ -65,14 +97,18 @@ async function sesionActual(): Promise<Sesion> {
 }
 
 async function entrar(numeroCuenta: string, password: string): Promise<Sesion> {
-  const { error } = await supabase.auth.signInWithPassword({
-    email: emailDeCuenta(numeroCuenta),
-    password,
-  });
+  const { error } = await conTiempoLimite(
+    supabase.auth.signInWithPassword({ email: emailDeCuenta(numeroCuenta), password }),
+    15_000,
+  );
   if (error) {
     if (error.status === 400 || /invalid/i.test(error.message))
       throw new ApiError("credenciales", "Número de cuenta o contraseña incorrectos.", 401);
-    throw new ApiError("auth", "No pudimos iniciar sesión. Inténtalo de nuevo.", error.status ?? 500);
+    throw new ApiError(
+      "auth",
+      "No pudimos iniciar sesión. Inténtalo de nuevo.",
+      error.status ?? 500,
+    );
   }
   return sesionActual();
 }
@@ -114,7 +150,7 @@ export const supabaseApi: SemillasApi = {
   obtenerCuotaEntrada: () => call<CuotaEntrada>("GET", "/cuota"),
   crearPreferenciaPago: () =>
     call<PreferenciaPago>("POST", "/pago/preferencia", {
-      return_url: new URL(`${import.meta.env.BASE_URL}pago/retorno`, window.location.origin).toString(),
+      return_url: externalReturnUrl("pago/retorno"),
     }),
   confirmarRetornoPago: (input) => call<PagoEscrow>("POST", "/pago/confirmar", input),
   obtenerMiPago: () => call<PagoEscrow | null>("GET", "/pago/mio"),

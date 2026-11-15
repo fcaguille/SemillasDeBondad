@@ -4,7 +4,7 @@
  * - API / Convex / Mercado Pago requests are never cached.
  * Bump VERSION on deploy (or migrate to vite-plugin-pwa for precaching).
  */
-const VERSION = "sdb-v1";
+const VERSION = "sdb-v2";
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
 const scope = self.registration.scope;
