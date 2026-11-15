@@ -47,4 +47,4 @@ $$IE_c = \frac{\sum_{i=1}^{N_c} P_i}{M_c}$$
 
 ## 📄 Documentación Legal y Auditoría
 Consulta las reglas completas, el tabulador de sanciones y la fórmula oficial en:  
-👉 **[Términos y Condiciones del Programa]((https://github.com/fcaguille/SemillasDeBondad/blob/main/T%26C.md))**
+👉 **[Términos y Condiciones del Programa](https://github.com/fcaguille/SemillasDeBondad/blob/main/T%26C.md)**
