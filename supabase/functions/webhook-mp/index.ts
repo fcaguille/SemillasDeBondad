@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
     const signedDataId = dataId;
     const topic = String(body?.type ?? url.searchParams.get("type") ?? url.searchParams.get("topic") ?? "");
     const action = String(body?.action ?? "");
-    const isPaymentEvent = topic === "payment" || action === "payment.created" || action === "payment.updated";
+    const isPaymentEvent = ["payment", "payment.created", "payment.updated"].includes(topic) || ["payment.created", "payment.updated"].includes(action);
     if (!await signatureValid(req, signedDataId, secret)) {
       console.error("Firma de Mercado Pago inválida");
       throw new Error("Firma de webhook inválida.");
