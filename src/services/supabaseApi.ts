@@ -44,7 +44,7 @@ async function usuarioActual(): Promise<Usuario> {
   const { data: auth, error: authError } = await supabase.auth.getUser();
   if (authError || !auth.user) fail("Tu sesión expiró. Inicia sesión de nuevo.", 401);
   const uid = auth.user.id;
-  const profileResult = await supabase.from("perfiles_publicos").select("user_id,nickname,id_carrera,avatar_url,bio,estatus_pago,descalificado").eq("user_id", uid).single();
+  const profileResult = await supabase.from("perfiles_publicos").select("user_id,nickname,id_carrera,avatar_url,bio,estatus_pago,descalificado,motivo_descalificacion").eq("user_id", uid).single();
   const profile = check(profileResult.data, profileResult.error);
   const [plantas, votos] = await Promise.all([
     supabase.from("planta_creadores").select("id_planta", { count: "exact", head: true }).eq("user_id", uid),
@@ -60,6 +60,8 @@ async function usuarioActual(): Promise<Usuario> {
     bio: profile.bio ?? null,
     avatar_url: profile.avatar_url ?? null,
     estado: estadoCuenta(profile.estatus_pago, profile.descalificado),
+    descalificado: Boolean(profile.descalificado),
+    motivo_descalificacion: profile.motivo_descalificacion ?? null,
     amonestaciones: 0,
     puntos_aportados: 0,
     percentil_fca: 0,
