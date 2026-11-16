@@ -11,6 +11,7 @@ import { EscanearView } from "@/views/EscanearView";
 import { PlantaView } from "@/views/PlantaView";
 import { HistorialView } from "@/views/HistorialView";
 import { CuentaView } from "@/views/CuentaView";
+import { ContactoView } from "@/views/ContactoView";
 import { NotFoundView } from "@/views/NotFoundView";
 
 function Root() {
@@ -49,6 +50,7 @@ export const router = createHashRouter([
           { path: "escanear", Component: EscanearView },
           { path: "historial", Component: HistorialView },
           { path: "cuenta", Component: CuentaView },
+          { path: "contacto", Component: ContactoView },
         ],
       },
       { path: "*", Component: NotFoundView },

@@ -1,4 +1,4 @@
-import { BarChart2, Clock, ScanQrCode, Sprout, User, type LucideIcon } from "lucide-react";
+import { BarChart2, Clock, ScanQrCode, Sprout, User, Mail, type LucideIcon } from "lucide-react";
 
 export interface NavItem {
   to: string;
@@ -14,4 +14,5 @@ export const NAV_ITEMS: NavItem[] = [
   { to: "/escanear", label: "Escanear", icon: ScanQrCode, primary: true },
   { to: "/historial", label: "Historial", icon: Clock },
   { to: "/cuenta", label: "Cuenta", icon: User },
+  { to: "/contacto", label: "Contacto", icon: Mail },
 ];

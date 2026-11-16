@@ -228,6 +228,8 @@ export interface CrearPlantaInput {
 }
 
 export interface CompaneroValidado {
+  user_id?: string;
+  /** Se conserva vacío: la búsqueda pública nunca devuelve matrículas. */
   numero_cuenta: string;
   nickname: string;
   carrera: Carrera;
