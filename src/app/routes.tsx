@@ -2,6 +2,9 @@ import { createHashRouter, Navigate, Outlet, ScrollRestoration } from "react-rou
 import { RouteErrorFallback } from "./ErrorBoundary";
 import { AppShell } from "@/components/layout/AppShell";
 import { Toaster } from "@/components/ui/toaster";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
+import { useSesion } from "@/hooks/useSemillas";
 import { RegistroView } from "@/views/RegistroView";
 import { PagoRetornoView } from "@/views/PagoRetornoView";
 import { ImpactoView } from "@/views/ImpactoView";
@@ -15,8 +18,29 @@ import { ContactoView } from "@/views/ContactoView";
 import { NotFoundView } from "@/views/NotFoundView";
 
 function Root() {
+  const [params] = useSearchParams();
+  const sesion = useSesion();
+  const [mensajePago,setMensajePago] = useState<string|null>(null);
+  const pagoExitoso = params.get("pago") === "exitoso";
+  useEffect(() => {
+    if (!pagoExitoso) return;
+    let cancelado = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let intentos = 0;
+    const verificar = async () => {
+      const actual = await sesion.refetch();
+      if (cancelado) return;
+      if (actual?.usuario?.estado === "activa") { setMensajePago("¡Pago confirmado! Tu cuenta ya está activa. ¡Gracias por apoyar el reto!"); return; }
+      intentos += 1;
+      if (intentos < 6) timer = setTimeout(verificar, 2500);
+      else setMensajePago("Recibimos tu regreso de Mercado Pago. La confirmación puede tardar unos minutos; actualizaremos tu cuenta en cuanto se registre.");
+    };
+    void verificar();
+    return () => { cancelado = true; if (timer) clearTimeout(timer); };
+  }, [pagoExitoso]);
   return (
     <>
+      {mensajePago && <div role="status" className="fixed inset-x-4 top-4 z-[110] mx-auto max-w-xl rounded-xl border border-primary/30 bg-background p-4 text-sm font-semibold shadow-xl">{mensajePago}</div>}
       <Outlet />
       <Toaster />
       <ScrollRestoration />
