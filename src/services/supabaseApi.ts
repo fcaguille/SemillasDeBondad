@@ -132,9 +132,11 @@ export const supabaseApi: SemillasApi = {
     return data as PreferenciaPago;
   },
   async confirmarRetornoPago(_input: RetornoPagoInput): Promise<PagoEscrow> {
-    const pago = await this.obtenerMiPago();
-    if (!pago) fail("Mercado Pago todavía no registra la confirmación. Espera un momento y vuelve a consultar.", 409);
-    return pago;
+    const { data, error } = await supabase.rpc("mi_pago");
+    if (error) fail(error.message);
+    const row = (data ?? [])[0];
+    if (!row) fail("Mercado Pago todavía no registra la confirmación. Espera un momento y vuelve a consultar.", 409);
+    return row as PagoEscrow;
   },
   async obtenerMiPago(): Promise<PagoEscrow | null> {
     const { data, error } = await supabase.rpc("mi_pago");
