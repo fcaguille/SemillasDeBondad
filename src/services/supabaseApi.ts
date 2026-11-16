@@ -125,7 +125,12 @@ export const supabaseApi: SemillasApi = {
     return usuarioActual();
   },
   async obtenerCuotaEntrada(): Promise<CuotaEntrada> { return { aportacion_centavos: 1000, comision_centavos: 600, total_centavos: 1600, moneda: "MXN" }; },
-  async crearPreferenciaPago(): Promise<PreferenciaPago> { return pagoNoDisponible(); },
+  async crearPreferenciaPago(): Promise<PreferenciaPago> {
+    const { data, error } = await supabase.functions.invoke("crear-preferencia-mp", { body: {} });
+    if (error) fail("No pudimos iniciar el pago con Mercado Pago.", 502);
+    if (!data?.init_point || !data?.preferencia_id) fail("Mercado Pago no devolvió una preferencia válida.", 502);
+    return data as PreferenciaPago;
+  },
   async confirmarRetornoPago(_input: RetornoPagoInput): Promise<PagoEscrow> { return pagoNoDisponible(); },
   async obtenerMiPago(): Promise<PagoEscrow | null> { return null; },
   async listarMisPlantas() {
