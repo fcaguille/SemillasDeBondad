@@ -227,8 +227,7 @@ export function RegistroView() {
               <div className="mx-auto flex max-w-[432px] flex-col gap-2">
                 <ActivarGarantiaButton
                   className="min-h-14 w-full px-3 text-[15px]"
-                  onFallo={setErrorGeneral}
-                >
+                  >
                   Pagar {total} con Mercado Pago (Acceso Total + Premio)
                 </ActivarGarantiaButton>
                 <Button
@@ -375,7 +374,7 @@ export function RegistroView() {
                       <a
                         href={LINKS.contrato}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="mt-2 flex w-fit items-center gap-[6px] rounded-full border border-border bg-card px-[10px] py-1 text-[12px] font-semibold underline decoration-foreground/30 underline-offset-2"
                       >
                         <GithubMark size={13} /> Ver contrato público en GitHub{" "}
