@@ -229,7 +229,7 @@ export function RegistroView() {
                 <ActivarGarantiaButton
                   className="min-h-14 w-full px-3 text-[15px]"
                   >
-                  Pagar {total} con Mercado Pago (Acceso Total + Premio)
+                  Activar Garantía · Pagar {total} MXN con Mercado Pago
                 </ActivarGarantiaButton>
                 <Button
                   variant="outline"
