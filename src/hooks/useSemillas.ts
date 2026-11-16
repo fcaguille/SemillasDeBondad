@@ -37,7 +37,7 @@ export const keys = {
 /* ---------- Auth ---------- */
 
 export const useSesion = () =>
-  useQuery(keys.sesion, () => api.obtenerSesion(), { staleTime: 60_000 });
+  useQuery(keys.sesion, () => api.obtenerSesion(), { staleTime: 0, refetchInterval: 5_000 });
 
 export function useUsuarioActual() {
   const q = useSesion();
