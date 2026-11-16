@@ -181,14 +181,18 @@ export const supabaseApi: SemillasApi = {
   async listarMisCalificaciones(): Promise<InteraccionConPlanta[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return [];
-    const { data, error } = await supabase.from("interacciones").select("*, plantas:plantas_publicas(id_planta,nombre_creacion,no_diseno)").eq("evaluador_id", user.id).order("creado_en", { ascending: false });
+    const { data, error } = await supabase.from("interacciones").select("*").eq("evaluador_id", user.id).order("creado_en", { ascending: false });
     if (error) fail(error.message);
-    return (data ?? []).map((r: Row) => ({
-      id: r.id_interaccion, planta_id: r.id_planta, usuario_id: r.evaluador_id,
-      tipo: r.tipo === "CALIFICACION" ? "voto" : "reporte",
-      estrellas: r.tipo === "CALIFICACION" ? r.valor_numerico : null,
-      motivo: r.motivo_reporte, creada_en: r.creado_en,
-      planta: { id: r.plantas.id_planta, nombre: r.plantas.nombre_creacion, no_diseno: r.plantas.no_diseno },
+    return Promise.all((data ?? []).map(async (r: Row) => {
+      const planta = await plantaPorId(r.id_planta);
+      if (!planta) fail("No pudimos cargar una maceta de tu historial.", 404);
+      return {
+        id: r.id_interaccion, planta_id: r.id_planta, usuario_id: r.evaluador_id,
+        tipo: r.tipo === "CALIFICACION" ? "voto" as const : "reporte" as const,
+        estrellas: r.tipo === "CALIFICACION" ? r.valor_numerico : null,
+        motivo: r.motivo_reporte, creada_en: r.creado_en,
+        planta: { id: planta.id, nombre: planta.nombre, no_diseno: planta.no_diseno },
+      };
     }));
   },
   async obtenerPozo(): Promise<PozoResumen> {
