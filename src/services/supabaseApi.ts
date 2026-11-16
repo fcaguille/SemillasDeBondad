@@ -131,8 +131,17 @@ export const supabaseApi: SemillasApi = {
     if (!data?.init_point || !data?.preferencia_id) fail("Mercado Pago no devolvió una preferencia válida.", 502);
     return data as PreferenciaPago;
   },
-  async confirmarRetornoPago(_input: RetornoPagoInput): Promise<PagoEscrow> { return pagoNoDisponible(); },
-  async obtenerMiPago(): Promise<PagoEscrow | null> { return null; },
+  async confirmarRetornoPago(_input: RetornoPagoInput): Promise<PagoEscrow> {
+    const pago = await this.obtenerMiPago();
+    if (!pago) fail("Mercado Pago todavía no registra la confirmación. Espera un momento y vuelve a consultar.", 409);
+    return pago;
+  },
+  async obtenerMiPago(): Promise<PagoEscrow | null> {
+    const { data, error } = await supabase.rpc("mi_pago");
+    if (error) fail(error.message);
+    const row = (data ?? [])[0];
+    return row ? row as PagoEscrow : null;
+  },
   async listarMisPlantas() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) fail("Inicia sesión para consultar tus macetas.", 401);
