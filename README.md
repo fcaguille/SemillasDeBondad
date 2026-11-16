@@ -22,7 +22,7 @@ Para evitar sesgos por tamaño de matrícula entre licenciaturas, el ranking se 
 $$IE_c = \frac{\sum_{i=1}^{N_c} P_i}{M_c}$$
 
 * **$P_i$**: Puntaje neto de cada maceta (repartido equitativamente entre equipos de hasta 3 integrantes).
-* **$M_c$**: Matrícula oficial base de cada licenciatura.
+* **$M_c$**: Matrícula oficial de registros activos de cada licenciatura.
 
 ### Candados de Integridad Implementados en Base de Datos (PostgreSQL RPC / RLS)
 1. **Unicidad de Matrícula:** Validación 1 a 1 mediante Número de Cuenta UNAM de 9 dígitos.
