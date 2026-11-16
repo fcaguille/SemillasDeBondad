@@ -70,8 +70,8 @@ export interface Usuario {
   bio: string | null;
   avatar_url: string | null;
   estado: EstadoCuenta;
-  descalificado: boolean;
-  motivo_descalificacion: string | null;
+  descalificado?: boolean;
+  motivo_descalificacion?: string | null;
   amonestaciones: number;
   /** Net points this user has contributed to their career. */
   puntos_aportados: number;
