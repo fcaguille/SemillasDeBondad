@@ -81,5 +81,30 @@ El sistema opera bajo cuatro candados técnicos y normativos de cumplimiento obl
 
 ---
 
+## 8. Vigencia del Reto, Publicación de Resultados y Adjudicación del Premio
+El certamen se regirá bajo el siguiente calendario oficial:
+
+* **Periodo de participación y acumulación de puntos:** Desde la apertura de la plataforma y **hasta el 30 de noviembre de 2027 a las 23:59 horas (hora del Centro de México)**. Al cumplirse este plazo, el sistema cerrará automáticamente el registro de nuevas macetas y la emisión de calificaciones o reportes.
+* **Publicación de resultados y convocatoria de entrega:** El **11 de diciembre de 2027** se publicarán los resultados auditados en el tablero oficial de la aplicación y se abrirá la convocatoria de dispersión para los integrantes elegibles de la licenciatura ganadora.
+* **Regla de reparto equitativo:** El 100% del fondo neto acumulado en custodia ($10.00 MXN por cada participante activo registrado) se dividirá en **partes exactamente iguales** entre el total de participantes con cuenta activa (`ACTIVO`) y sin sanciones (`descalificado = FALSE`) pertenecientes a la licenciatura que obtenga el mayor Índice Ecosustentable ($IE_c$).
+
+---
+
+## 9. Registro de CLABE Interbancaria y Dispersión Electrónica
+1. **Captura voluntaria y confidencial:** Cada participante activo podrá registrar su **CLABE Interbancaria (18 dígitos)** de una cuenta bancaria nacional (SPEI) en el apartado privado de su perfil. Este dato permanece cifrado y restringido exclusivamente al titular de la cuenta y al proceso automatizado de dispersión.
+2. **Responsabilidad sobre los datos bancarios:** Es responsabilidad única y exclusiva del estudiante verificar que los 18 dígitos de su CLABE interbancaria sean correctos y correspondan a una cuenta activa capaz de recibir transferencias SPEI.
+3. **Plazo de validación:** Los integrantes de la licenciatura ganadora deberán tener registrada su CLABE válida a más tardar dentro de los 5 días naturales posteriores a la apertura de la convocatoria del **11 de diciembre de 2027** para procesar el envío automático.
+
+---
+
+## 10. Descargo de Responsabilidades (Limitación de Responsabilidad)
+Al registrarse y utilizar la plataforma **Semillas de Bondad**, el usuario reconoce y acepta expresamente los siguientes términos de exención de responsabilidad:
+
+1. **Iniciativa Estudiantil Independiente:** *Semillas de Bondad* es un proyecto tecnológico y comunitario desarrollado de forma independiente por estudiantes. No constituye un programa oficial operado ni financiado por las autoridades administrativas de la Facultad de Contaduría y Administración ni de la Universidad Nacional Autónoma de México (UNAM), por lo que dichas instituciones quedan deslindadas de cualquier responsabilidad administrativa, financiera o técnica derivada del certamen.
+2. **Seguridad Física en la Elaboración de Macetas:** La recolección de residuos, uso de herramientas de corte o pegado y colocación de macetas dentro del campus se realiza bajo la estricta responsabilidad y cuidado de cada participante. Los organizadores no se hacen responsables por lesiones menores, manchas o daños materiales ocurridos durante la manufactura manual de las piezas.
+3. **Irrevocabilidad de Transferencias por Error en CLABE:** Una vez ejecutada la dispersión electrónica automática hacia la CLABE interbancaria de 18 dígitos capturada por el usuario en su perfil, la operación se considerará cumplida y liberada. Los organizadores **no asumen responsabilidad ni obligación de reponer fondos** transferidos a cuentas erróneas, inactivas o pertenecientes a terceros debido a errores de captura del propio participante.
+4. **Servicios Tecnológicos y Pasarelas de Terceros:** La disponibilidad de la plataforma y el procesamiento de pagos dependen de proveedores externos (Supabase, servicios de alojamiento web, Mercado Pago y el sistema bancario SPEI). Los organizadores no serán responsables por interrupciones temporales de red, retrasos bancarios o mantenimientos programados por dichos proveedores.
+5. **Conservación de Fotografías Locales (`IndexedDB`):** Debido a que las fotografías reales de las macetas se almacenan exclusivamente en la memoria local del navegador del usuario para proteger la privacidad y reducir la huella de carbono digital, el participante es responsable de respaldar sus imágenes mediante la función de descarga de carta PNG. Los organizadores no pueden recuperar fotografías perdidas por limpieza de caché, cambio de dispositivo o desinstalación del navegador.
+
 ## 8. Cierre del Certamen y Adjudicación del Fondo
 Al cumplirse la fecha y hora de cierre establecidas en la convocatoria oficial, el sistema suspenderá el registro de nuevas creaciones y votos. Se publicará el acta digital con el desglose de pagos verificados y el cálculo final de $IE_c$. El 100% del fondo neto acumulado ($10.00 MXN por cada participante activo) será entregado públicamente a la comunidad de la licenciatura que obtenga el mayor Índice Ecosustentable.
