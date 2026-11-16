@@ -32,7 +32,7 @@ export function TeamBuilder({
     if (!draft.trim()) return setError("Escribe un número de cuenta o nickname.");
     try {
       const c = await validar(draft);
-      if (companeros.some((x) => x.user_id === c.user_id)) return setError("Ese compañero ya está en tu equipo.");
+      if (companeros.some((x) => (x.user_id ?? x.numero_cuenta) === (c.user_id ?? c.numero_cuenta))) return setError("Ese compañero ya está en tu equipo.");
       onChange([...companeros, c]);
       setDraft("");
     } catch (e) {
@@ -56,7 +56,7 @@ export function TeamBuilder({
         <AnimatePresence initial={false}>
           {companeros.map((c) => (
             <motion.li
-              key={c.user_id}
+              key={c.user_id ?? c.numero_cuenta}
               layout
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -69,7 +69,7 @@ export function TeamBuilder({
                 type="button"
                 aria-label={`Quitar a ${c.nickname}`}
                 onClick={() =>
-                  onChange(companeros.filter((x) => x.user_id !== c.user_id))
+                  onChange(companeros.filter((x) => (x.user_id ?? x.numero_cuenta) !== (c.user_id ?? c.numero_cuenta)))
                 }
                 className="grid size-6 place-items-center rounded-full text-muted-foreground hover:bg-muted"
               >
