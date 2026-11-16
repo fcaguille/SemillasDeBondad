@@ -19,7 +19,7 @@ export function TeamBuilder({
   creador: Pick<Usuario, "nickname" | "carrera">;
   companeros: CompaneroValidado[];
   onChange: (c: CompaneroValidado[]) => void;
-  /** Validates a 9-digit account against the backend. */
+  /** Busca por número de cuenta (9 dígitos) o nickname público. */
   validar: (numeroCuenta: string) => Promise<CompaneroValidado>;
   validando: boolean;
 }) {
@@ -29,11 +29,10 @@ export function TeamBuilder({
 
   const add = async () => {
     setError(null);
-    if (!/^\d{9}$/.test(draft)) return setError("Escribe los 9 dígitos del número de cuenta.");
-    if (companeros.some((c) => c.numero_cuenta === draft))
-      return setError("Ese compañero ya está en tu equipo.");
+    if (!draft.trim()) return setError("Escribe un número de cuenta o nickname.");
     try {
       const c = await validar(draft);
+      if (companeros.some((x) => x.user_id === c.user_id)) return setError("Ese compañero ya está en tu equipo.");
       onChange([...companeros, c]);
       setDraft("");
     } catch (e) {
@@ -57,7 +56,7 @@ export function TeamBuilder({
         <AnimatePresence initial={false}>
           {companeros.map((c) => (
             <motion.li
-              key={c.numero_cuenta}
+              key={c.user_id}
               layout
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -70,7 +69,7 @@ export function TeamBuilder({
                 type="button"
                 aria-label={`Quitar a ${c.nickname}`}
                 onClick={() =>
-                  onChange(companeros.filter((x) => x.numero_cuenta !== c.numero_cuenta))
+                  onChange(companeros.filter((x) => x.user_id !== c.user_id))
                 }
                 className="grid size-6 place-items-center rounded-full text-muted-foreground hover:bg-muted"
               >
@@ -86,11 +85,10 @@ export function TeamBuilder({
           value={draft}
           disabled={full}
           invalid={!!error}
-          onChange={(e) => setDraft(e.target.value.replace(/\D/g, "").slice(0, 9))}
+          onChange={(e) => setDraft(e.target.value.slice(0, 40))}
           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), add())}
-          inputMode="numeric"
-          aria-label="Agregar No. de Cuenta de compañero"
-          placeholder={full ? "Equipo completo" : "Agregar No. de Cuenta de compañero"}
+          aria-label="Buscar compañero por número de cuenta o nickname"
+          placeholder={full ? "Equipo completo" : "Número de cuenta o @nickname"}
         />
         <Button
           type="button"
@@ -110,7 +108,7 @@ export function TeamBuilder({
       <FieldMessage error>{error}</FieldMessage>
       <p className="mt-2 flex gap-[6px] text-[12px] leading-[17px] text-muted-foreground">
         <Info size={14} className="mt-[1px] shrink-0" aria-hidden />
-        Puntos y sanciones se dividen equitativamente entre sus carreras
+        Solo aparecen cuentas activas existentes. No se crean cuentas nuevas desde aquí.
       </p>
     </div>
   );
