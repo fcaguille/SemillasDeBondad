@@ -15,7 +15,7 @@ export function BottomTabBar({ dark = false }: { dark?: boolean }) {
           : "border-border bg-[rgba(255,255,255,0.92)]",
       )}
     >
-      <ul className="mx-auto grid h-[58px] max-w-md grid-cols-5 px-2 pt-[6px]">
+      <ul className="mx-auto grid h-[58px] max-w-md grid-cols-6 px-2 pt-[6px]">
         {NAV_ITEMS.map(({ to, label, icon: Icon, primary }) => (
           <li key={to} className="relative flex justify-center">
             <NavLink
