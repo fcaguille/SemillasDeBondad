@@ -107,6 +107,7 @@ export function RegistroView() {
     }
   };
 
+  // Checkout Pro se inicia en el servicio aislado src/lib/pagos.ts.
   const total = cuota.data ? formatMXN(cuota.data.total_centavos) : "$16.00";
 
   return (
