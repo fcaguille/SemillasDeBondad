@@ -121,7 +121,7 @@ export function CrearMacetaView() {
     try {
       const planta = await crear.mutateAsync({
         nombre: nombre.trim(),
-        companeros: companeros.map((c) => c.user_id),
+        companeros: companeros.map((c) => c.user_id ?? c.numero_cuenta),
       });
       await guardarFoto
         .mutateAsync({ plantaId: planta.id, file: foto })
