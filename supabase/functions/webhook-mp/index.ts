@@ -38,14 +38,20 @@ Deno.serve(async (req) => {
     if (!secret || !mpToken) throw new Error("Faltan secretos MP.");
     const url = new URL(req.url);
     const body = await req.json().catch(() => ({}));
+    // Mercado Pago envía data.id en query string; en notificaciones sin query,
+    // usamos el ID del cuerpo para validar el manifiesto y consultar el pago.
+    const dataId = String(url.searchParams.get("data.id") ?? body?.data?.id ?? "").trim();
+    const signedDataId = dataId;
     const topic = String(body?.type ?? url.searchParams.get("type") ?? url.searchParams.get("topic") ?? "");
-    const dataId = String(url.searchParams.get("data.id") ?? body?.data?.id ?? "");
-    const signedDataId = url.searchParams.get("data.id") ?? "";
+    const action = String(body?.action ?? "");
+    const isPaymentEvent = topic === "payment" || action === "payment.created" || action === "payment.updated";
     if (!await signatureValid(req, signedDataId, secret)) {
       console.error("Firma de Mercado Pago inválida");
       throw new Error("Firma de webhook inválida.");
     }
-    if (topic !== "payment" || !dataId) return json(200, { resultado: "ignorado" });
+    if (!isPaymentEvent || !dataId) {
+      return json(200, { resultado: "ignorado", topic, action });
+    }
 
     const response = await fetch(`${MP_API}/v1/payments/${encodeURIComponent(dataId)}`, {
       headers: { Authorization: `Bearer ${mpToken}` },
