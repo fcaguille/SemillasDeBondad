@@ -20,20 +20,15 @@ Podrán participar estudiantes inscritos en cualquiera de las licenciaturas de l
    * Permite escanear códigos QR de las macetas físicas en el campus y emitir calificaciones públicas de calidad (escala de 1 a 5 estrellas).
    * No permite registrar macetas propias, sumar puntos al índice de su licenciatura, emitir reportes de penalización ni reclamar parte del fondo acumulado.
 2. **Modalidad Participante Activo (Garantía de Compromiso):**
-   * Requiere el pago único de **$10.00 MXN** mediante la pasarela integrada (Mercado Pago).
+   * Requiere el pago único de activación de **$16.00 MXN** mediante la pasarela integrada (Mercado Pago).
    * Habilita el registro de macetas (individual o en equipo), la acumulación de puntos para su licenciatura, la facultad de auditar/reportar irregularidades y el derecho a participar en la adjudicación del fondo común si su licenciatura resulta ganadora.
 
 ---
 
-## 3. Estructura Financiera, Custodia y Comisiones
-Para garantizar la viabilidad operativa sin costo de infraestructura y asegurar la integridad del premio:
-
-* **Monto total de entrada:** **$10.00 MXN** por cuenta única.
-* **Desglose transparente:**
-  * **$4.95 MXN netos** ingresan al **Fondo Común en Custodia** (pozo acumulado visible en tiempo real en la aplicación).
-  * **$5.05 MXN** corresponden a la tarifa de Mercado Pago: 3.5% del pago ($0.35 MXN) + $4.00 MXN fijos, más 16% de IVA sobre esos $4.35 MXN ($0.696 MXN); el total se redondea a $5.05 MXN.
-* **No reembolsabilidad:** La aportación neta de $4.95 MXN al fondo común constituye una garantía de compromiso competitivo; por su naturaleza de pozo compartido entre licenciaturas, no es reembolsable una vez acreditado el pago.
-
+## 3. Estructura Financiera y Custodia
+* **Pago único de activación:** **$16.00 MXN** por participante.
+* **Aportación directa al fondo común:** **$10.00 MXN** de cada activación aprobada se integran al pozo acumulado, visible en tiempo real en la aplicación.
+* **No reembolsabilidad:** La aportación al fondo común constituye una garantía de compromiso competitivo; por su naturaleza de pozo compartido entre licenciaturas, no es reembolsable una vez acreditado el pago.
 ---
 
 ## 4. Requisitos Técnicos y Ambientales de las Creaciones
@@ -86,7 +81,11 @@ El certamen se regirá bajo el siguiente calendario oficial:
 
 * **Periodo de participación y acumulación de puntos:** Desde la apertura de la plataforma y **hasta el 30 de noviembre de 2027 a las 23:59 horas (hora del Centro de México)**. Al cumplirse este plazo, el sistema cerrará automáticamente el registro de nuevas macetas y la emisión de calificaciones o reportes.
 * **Publicación de resultados y convocatoria de entrega:** El **11 de diciembre de 2027** se publicarán los resultados auditados en el tablero oficial de la aplicación y se abrirá la convocatoria de dispersión para los integrantes elegibles de la licenciatura ganadora.
-* **Regla de reparto equitativo:** El 100% del fondo neto acumulado en custodia ($4.95 MXN netos por cada participante activo registrado) se dividirá en **partes exactamente iguales** entre el total de participantes con cuenta activa (`ACTIVO`) y sin sanciones (`descalificado = FALSE`) pertenecientes a la licenciatura que obtenga el mayor Índice Ecosustentable ($IE_c$).
+* **Regla de reparto equitativo:** **Quórum interdisciplinario:** Para ejecutar el reparto equitativo entre todas las personas participantes activas de la licenciatura ganadora, deben existir al menos **2 licenciaturas distintas** con participantes activos y un mínimo global de **20 participantes activos**.
+
+**Contingencia por carrera única o quórum insuficiente:** Si al cierre del **30 de noviembre de 2027** participa una sola licenciatura o hay menos de **20 participantes activos** en total, el **100% del fondo neto acumulado** se asignará a las **3 macetas elegibles con mayor puntaje individual**: **50%** para el primer lugar, **30%** para el segundo y **20%** para el tercero. El premio correspondiente a cada maceta se repartirá en partes iguales entre las personas integrantes activas y no descalificadas de su equipo.
+
+**Reparto ordinario:** Cuando se cumpla el quórum interdisciplinario, el 100% del fondo acumulado (integrado por **$10.00 MXN** directos al pozo por cada participante activo) se dividirá en partes iguales entre las personas participantes activas (`ACTIVO`) y sin sanciones (`descalificado = FALSE`) pertenecientes a la licenciatura que obtenga el mayor Índice Ecosustentable ($IE_c$).
 
 ---
 
