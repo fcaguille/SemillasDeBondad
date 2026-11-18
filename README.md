@@ -9,7 +9,7 @@
 El sistema transforma la participación ambiental voluntaria en una dinámica de cooperación cívica y competencia interdisciplinaria entre las licenciaturas de la FCA (**Contaduría**, **Administración**, **Informática** y **Negocios Internacionales**), aterrizando a escala universitaria los tres pilares del desarrollo sostenible (Ecológico, Social y Económico) y los ODS 11, 12, 13, 16 y 17 de la Agenda 2030:
 
 * **Economía Circular Tangible:** Reutilización de residuos cotidianos del campus para construir macetas con sistemas propios de autorriego y drenaje.
-* **Incentivo con Aversión a la Pérdida:** Los participantes activos aportan una garantía de entrada de **$10.00 MXN** vía Mercado Pago ($4.95 MXN netos se integran al fondo común en custodia y $5.05 MXN corresponden a la tarifa de Mercado Pago (3.5% + $4.00 MXN fijos + 16% de IVA sobre la comisión)). El pozo acumulado se adjudica al cierre a la licenciatura ganadora.
+* **Incentivo con Aversión a la Pérdida:** La activación de la participación requiere un pago único de **$16.00 MXN**; **$10.00 MXN** de cada activación se destinan directamente al fondo común en custodia. El pozo acumulado se adjudica al cierre a la licenciatura ganadora.
 * **Identidad Coleccionable:** Cada maceta física se vincula a un código QR que despliega una carta digital interactiva en 3D con uno de 5 arquetipos botánicos vectoriales.
 * **Acceso Inclusivo en Dos Niveles:** Cualquier estudiante puede registrarse gratis para escanear códigos QR y calificar macetas (1 a 5 estrellas), mientras que la creación de macetas y emisión de reportes requiere garantía activa.
 
