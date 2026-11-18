@@ -126,7 +126,7 @@ export const supabaseApi: SemillasApi = {
     if (error) fail(error.message);
     return usuarioActual();
   },
-  async obtenerCuotaEntrada(): Promise<CuotaEntrada> { return { aportacion_centavos: 940, comision_centavos: 60, total_centavos: 1000, moneda: "MXN" }; },
+  async obtenerCuotaEntrada(): Promise<CuotaEntrada> { return { aportacion_centavos: 495, comision_centavos: 505, total_centavos: 1000, moneda: "MXN" }; },
   async crearPreferenciaPago(): Promise<PreferenciaPago> {
     const { data, error } = await supabase.functions.invoke("crear-preferencia-mp", { body: {} });
     if (error) fail("No pudimos iniciar el pago con Mercado Pago.", 502);

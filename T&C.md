@@ -30,9 +30,9 @@ Para garantizar la viabilidad operativa sin costo de infraestructura y asegurar 
 
 * **Monto total de entrada:** **$10.00 MXN** por cuenta única.
 * **Desglose transparente:**
-  * **$9.40 MXN netos** ingresan al **Fondo Común en Custodia** (pozo acumulado visible en tiempo real en la aplicación).
-  * **$0.60 MXN** corresponden al **6% de comisión de procesamiento** de la pasarela de pagos (Mercado Pago Checkout Pro).
-* **No reembolsabilidad:** La aportación neta de $9.40 MXN al fondo común constituye una garantía de compromiso competitivo; por su naturaleza de pozo compartido entre licenciaturas, no es reembolsable una vez acreditado el pago.
+  * **$4.95 MXN netos** ingresan al **Fondo Común en Custodia** (pozo acumulado visible en tiempo real en la aplicación).
+  * **$5.05 MXN** corresponden a la tarifa de Mercado Pago: 3.5% del pago ($0.35 MXN) + $4.00 MXN fijos, más 16% de IVA sobre esos $4.35 MXN ($0.696 MXN); el total se redondea a $5.05 MXN.
+* **No reembolsabilidad:** La aportación neta de $4.95 MXN al fondo común constituye una garantía de compromiso competitivo; por su naturaleza de pozo compartido entre licenciaturas, no es reembolsable una vez acreditado el pago.
 
 ---
 
@@ -86,7 +86,7 @@ El certamen se regirá bajo el siguiente calendario oficial:
 
 * **Periodo de participación y acumulación de puntos:** Desde la apertura de la plataforma y **hasta el 30 de noviembre de 2027 a las 23:59 horas (hora del Centro de México)**. Al cumplirse este plazo, el sistema cerrará automáticamente el registro de nuevas macetas y la emisión de calificaciones o reportes.
 * **Publicación de resultados y convocatoria de entrega:** El **11 de diciembre de 2027** se publicarán los resultados auditados en el tablero oficial de la aplicación y se abrirá la convocatoria de dispersión para los integrantes elegibles de la licenciatura ganadora.
-* **Regla de reparto equitativo:** El 100% del fondo neto acumulado en custodia ($9.40 MXN netos por cada participante activo registrado) se dividirá en **partes exactamente iguales** entre el total de participantes con cuenta activa (`ACTIVO`) y sin sanciones (`descalificado = FALSE`) pertenecientes a la licenciatura que obtenga el mayor Índice Ecosustentable ($IE_c$).
+* **Regla de reparto equitativo:** El 100% del fondo neto acumulado en custodia ($4.95 MXN netos por cada participante activo registrado) se dividirá en **partes exactamente iguales** entre el total de participantes con cuenta activa (`ACTIVO`) y sin sanciones (`descalificado = FALSE`) pertenecientes a la licenciatura que obtenga el mayor Índice Ecosustentable ($IE_c$).
 
 ---
 

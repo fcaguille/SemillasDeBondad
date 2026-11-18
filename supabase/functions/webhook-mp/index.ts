@@ -1,6 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const MP_API = "https://api.mercadopago.com";
+const NETO_POZO_MXN = 4.95;
 const REF = /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\|(\d{9})$/i;
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
@@ -94,6 +95,7 @@ Deno.serve(async (req) => {
     if (payment.currency_id !== "MXN" || Number(payment.transaction_amount) < 10) {
       throw new Error("El pago aprobado no cumple el mínimo de $10.00 MXN.");
     }
+    // La RPC registra NETO_POZO_MXN por participante tras la comisión y el IVA de Mercado Pago.
     const { data, error } = await admin.rpc("registrar_pago_aprobado", {
       p_mp_payment_id: String(payment.id),
       p_user_id: userId,
@@ -101,7 +103,7 @@ Deno.serve(async (req) => {
       p_monto: Number(payment.transaction_amount),
     });
     if (error) throw error;
-    return json(200, { resultado: data });
+    return json(200, { resultado: data, monto_neto_pozo: NETO_POZO_MXN });
   } catch (error) {
     console.error("webhook-mp; se solicita reintento", error);
     return json(500, { error: "No se pudo procesar la notificación; Mercado Pago puede reintentar." });

@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       items: [{
         id: "garantia-semillas",
         title: "Garantía de participación · Semillas de Bondad ($10.00 MXN)",
-        description: "Pago único de $10.00 MXN; $9.40 MXN netos se destinan al pozo común después del 6% de comisión de pasarela.",
+        description: "Pago único de $10.00 MXN; $4.95 MXN netos se destinan al pozo común y $5.05 MXN corresponden a la comisión de Mercado Pago, incluidos 3.5% + $4.00 MXN fijos y 16% de IVA sobre la comisión.",
         quantity: 1,
         currency_id: "MXN",
         unit_price: 10.00,

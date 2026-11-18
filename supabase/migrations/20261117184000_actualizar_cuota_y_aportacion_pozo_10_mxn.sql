@@ -1,5 +1,5 @@
 ALTER TABLE public.pagos_mercadopago
-  ALTER COLUMN monto_neto_pozo SET DEFAULT 9.40;
+  ALTER COLUMN monto_neto_pozo SET DEFAULT 4.95;
 
 CREATE OR REPLACE FUNCTION public.registrar_pago_aprobado(
   p_mp_payment_id text,
@@ -28,7 +28,7 @@ BEGIN
   INSERT INTO public.pagos_mercadopago
     (mp_payment_id, user_id, no_cuenta, monto_bruto, monto_neto_pozo, estatus_mp, fecha_aprobacion)
   VALUES
-    (p_mp_payment_id, p_user_id, p_no_cuenta, p_monto, 9.40, 'approved', now())
+    (p_mp_payment_id, p_user_id, p_no_cuenta, p_monto, 4.95, 'approved', now())
   ON CONFLICT (user_id) DO UPDATE SET
     mp_payment_id = EXCLUDED.mp_payment_id,
     no_cuenta = EXCLUDED.no_cuenta,
