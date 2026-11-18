@@ -10,19 +10,19 @@ blocked = [
     ("proveedor", re.compile("cl" + "aude", re.IGNORECASE)),
     ("proveedor", re.compile("anth" + "ropic", re.IGNORECASE)),
     ("proveedor", re.compile("gem" + "ini", re.IGNORECASE)),
-    ("modelo", re.compile(r"\\b" + "ll" + "m" + r"\\b", re.IGNORECASE)),
+    ("modelo", re.compile(r"\b" + "ll" + "m" + r"\b", re.IGNORECASE)),
     ("frase", re.compile("generado por " + "i" + "a", re.IGNORECASE)),
     ("rol", re.compile("asis" + "tente", re.IGNORECASE)),
     ("frase", re.compile("inteligencia " + "artificial", re.IGNORECASE)),
-    ("sigla", re.compile(r"\\b" + "a" + "i" + r"\\b", re.IGNORECASE)),
-    ("sigla", re.compile(r"\\b" + "i" + "a" + r"\\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + "a" + "i" + r"\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + "i" + "a" + r"\b", re.IGNORECASE)),
 ]
 old_prices = [
-    re.compile(r"\\$" + "16(?:\\.00)?", re.IGNORECASE),
-    re.compile("16" + r"\\.00\\s*MXN", re.IGNORECASE),
-    re.compile("16" + r"\\s*MXN", re.IGNORECASE),
-    re.compile("16" + r"\\s+pesos", re.IGNORECASE),
-    re.compile(r"\\$" + "6(?:\\.00)?\\s*MXN", re.IGNORECASE),
+    re.compile(r"\$" + "16(?:\.00)?", re.IGNORECASE),
+    re.compile("16" + r"\.00\s*MXN", re.IGNORECASE),
+    re.compile("16" + r"\s*MXN", re.IGNORECASE),
+    re.compile("16" + r"\s+pesos", re.IGNORECASE),
+    re.compile(r"\$" + "6(?:\.00)?\s*MXN", re.IGNORECASE),
 ]
 ignored_dirs = {".git", "node_modules", "dist", ".wrangler"}
 issues = []
@@ -48,7 +48,7 @@ for path in ROOT.rglob("*"):
                 issues.append(f"{rel}:{line_no}: precio anterior detectado")
 
 if issues:
-    print("\\n".join(issues))
+    print("\n".join(issues))
     sys.exit(1)
 
 print("Auditoría correcta: sin referencias bloqueadas ni precios anteriores.")
