@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Auditar referencias y cuotas
+        run: python scripts/audit-repository.py
       - name: Instalar dependencias
         run: pnpm install --frozen-lockfile
       - name: Compilar producción
