@@ -54,7 +54,7 @@ export const MAX_INTEGRANTES = 3;
  */
 export type EstadoCuenta = "pendiente_pago" | "activa" | "suspendida";
 
-/** True when the $10 MXN escrow is paid (full access). */
+/** True when the $16 MXN activation payment is approved (full access). */
 export const tieneGarantia = (u: Pick<Usuario, "estado"> | null | undefined) =>
   u?.estado === "activa";
 /** True for any signed-in account allowed to rate planters (free or paid). */
@@ -151,8 +151,7 @@ export interface PagoEscrow {
   id: string;
   usuario_id: string;
   folio: string; // "MP-9921" (Mercado Pago payment_id or internal folio)
-  aportacion_centavos: number; // 495
-  comision_centavos: number; // 505
+  aportacion_centavos: number; // 1000
   total_centavos: number; // 1600
   moneda: "MXN";
   estado: EstadoPago;
@@ -185,7 +184,6 @@ export interface FotoLocal {
 
 export interface CuotaEntrada {
   aportacion_centavos: number;
-  comision_centavos: number;
   total_centavos: number;
   moneda: "MXN";
 }
