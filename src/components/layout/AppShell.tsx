@@ -60,7 +60,7 @@ export function AppShell() {
           <div className="mt-6 grid gap-3">
             {garantiaDevuelta && (
               <Button onClick={reactivar} disabled={reactivando} className="w-full" size="lg">
-                {reactivando ? "Conectando con Mercado Pago…" : "Reactivar Cuenta Pagando Garantía ($10.00 MXN)"}
+                {reactivando ? "Conectando con Mercado Pago…" : "Reactivar Cuenta Pagando Garantía ($16.00 MXN)"}
               </Button>
             )}
             <Button onClick={cerrarSesion} variant="outline" className="w-full">Cerrar sesión</Button>
