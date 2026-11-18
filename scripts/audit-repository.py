@@ -28,7 +28,7 @@ old_prices = [
     re.compile(r"\$" + "20" + r"(?:\.00)?(?:\s*MXN)?", re.IGNORECASE),
     re.compile(r"\$" + "14" + r"\.55(?:\s*MXN)?", re.IGNORECASE),
 ]
-commission_terms = re.compile("comisi" + "ón|" + "comision" + "_centavos|" + r"3\\.5%|" + r"\\b" + "I" + "VA" + r"\\b", re.IGNORECASE)
+commission_terms = re.compile("comisi" + "ón|" + "comision" + "_centavos|" + r"3\.5%|" + r"\b" + "I" + "VA" + r"\b", re.IGNORECASE)
 
 ignored_dirs = {".git", "node_modules", "dist", ".wrangler"}
 issues = []
