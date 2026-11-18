@@ -38,7 +38,7 @@ export function EscrowSummary({ cuota }: { cuota: CuotaEntrada | undefined }) {
           </div>
         </dl>
       )}
-      <p className="px-4 pb-4 text-[12px] leading-[18px] text-muted-foreground">De cada pago de $10.00 MXN, $4.95 MXN se integran al pozo común y $5.05 MXN corresponden a la comisión de Mercado Pago: 3.5% + $4.00 MXN fijos, más 16% de IVA sobre la comisión.</p>
+      <p className="px-4 pb-4 text-[12px] leading-[18px] text-muted-foreground">El pago único de activación es de $16.00 MXN; $10.00 MXN se integran directamente al pozo acumulado.</p>
     </Card>
   );
 }
