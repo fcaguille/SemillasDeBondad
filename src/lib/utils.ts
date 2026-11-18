@@ -17,7 +17,7 @@ const mxn0 = new Intl.NumberFormat("es-MX", {
 });
 const num = new Intl.NumberFormat("es-MX");
 
-/** 1600 → "$16.00" */
+/** 1000 → "$10.00" */
 export const formatMXN = (centavos: number, { decimals = true } = {}) =>
   (decimals ? mxn : mxn0).format(centavos / 100);
 export const formatNumber = (n: number) => num.format(n);

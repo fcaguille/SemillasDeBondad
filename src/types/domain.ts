@@ -151,7 +151,7 @@ export interface PagoEscrow {
   id: string;
   usuario_id: string;
   folio: string; // "MP-9921" (Mercado Pago payment_id or internal folio)
-  aportacion_centavos: number; // 1000
+  aportacion_centavos: number; // 940
   comision_centavos: number; // 600
   total_centavos: number; // 1600
   moneda: "MXN";

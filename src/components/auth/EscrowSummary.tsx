@@ -38,6 +38,7 @@ export function EscrowSummary({ cuota }: { cuota: CuotaEntrada | undefined }) {
           </div>
         </dl>
       )}
+      <p className="px-4 pb-4 text-[12px] leading-[18px] text-muted-foreground">De cada pago de $10.00 MXN, $9.40 MXN se integran al pozo común y $0.60 MXN corresponden al 6% de comisión de pasarela.</p>
     </Card>
   );
 }

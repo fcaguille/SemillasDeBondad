@@ -188,7 +188,7 @@ const TENDENCIA: Record<Carrera, number> = {
 };
 
 export const CUOTA_ENTRADA = {
-  aportacion_centavos: 1000,
+  aportacion_centavos: 940,
   comision_centavos: 600,
   total_centavos: 1600,
   moneda: "MXN" as const,

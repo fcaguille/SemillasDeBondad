@@ -1,6 +1,6 @@
 import { supabase } from "@/services/supabaseClient";
 
-export const GARANTIA_MXN = 16;
+export const GARANTIA_MXN = 10;
 
 /** Solicita al servidor una preferencia Checkout Pro y redirige al checkout alojado por Mercado Pago. */
 export async function activarGarantia(): Promise<void> {
