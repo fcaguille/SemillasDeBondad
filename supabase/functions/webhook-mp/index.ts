@@ -1,7 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const MP_API = "https://api.mercadopago.com";
-const NETO_POZO_MXN = 4.95;
+const NETO_POZO_MXN = 10.00;
 const REF = /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\|(\d{9})$/i;
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
@@ -92,10 +92,10 @@ Deno.serve(async (req) => {
     if (payment.status !== "approved") {
       return json(200, { resultado: "sin_accion", estatus: payment.status });
     }
-    if (payment.currency_id !== "MXN" || Number(payment.transaction_amount) < 10) {
-      throw new Error("El pago aprobado no cumple el mínimo de $10.00 MXN.");
+    if (payment.currency_id !== "MXN" || Number(payment.transaction_amount) < 16) {
+      throw new Error("El pago aprobado no cumple el mínimo de $16.00 MXN.");
     }
-    // La RPC registra NETO_POZO_MXN por participante tras la comisión y el IVA de Mercado Pago.
+    // La RPC registra la aportación íntegra al pozo acumulado por participante.
     const { data, error } = await admin.rpc("registrar_pago_aprobado", {
       p_mp_payment_id: String(payment.id),
       p_user_id: userId,
