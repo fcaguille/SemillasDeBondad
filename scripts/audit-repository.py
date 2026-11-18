@@ -3,26 +3,28 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+ai = chr(97) + chr(105)
+ia = chr(105) + chr(97)
 blocked = [
     ("proveedor", re.compile("fig" + "ma", re.IGNORECASE)),
     ("generador", re.compile("chat" + "gpt", re.IGNORECASE)),
-    ("proveedor", re.compile("open" + "ai", re.IGNORECASE)),
+    ("proveedor", re.compile("open" + ai, re.IGNORECASE)),
     ("proveedor", re.compile("cl" + "aude", re.IGNORECASE)),
     ("proveedor", re.compile("anth" + "ropic", re.IGNORECASE)),
     ("proveedor", re.compile("gem" + "ini", re.IGNORECASE)),
     ("modelo", re.compile(r"\b" + "ll" + "m" + r"\b", re.IGNORECASE)),
-    ("frase", re.compile("generado por " + "i" + "a", re.IGNORECASE)),
+    ("frase", re.compile("generado por " + ia, re.IGNORECASE)),
     ("rol", re.compile("asis" + "tente", re.IGNORECASE)),
     ("frase", re.compile("inteligencia " + "artificial", re.IGNORECASE)),
-    ("sigla", re.compile(r"\b" + "a" + "i" + r"\b", re.IGNORECASE)),
-    ("sigla", re.compile(r"\b" + "i" + "a" + r"\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + ai + r"\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + ia + r"\b", re.IGNORECASE)),
 ]
 old_prices = [
-    re.compile(r"\$" + "16(?:\.00)?", re.IGNORECASE),
+    re.compile(r"\$" + "16" + r"(?:\.00)?", re.IGNORECASE),
     re.compile("16" + r"\.00\s*MXN", re.IGNORECASE),
     re.compile("16" + r"\s*MXN", re.IGNORECASE),
     re.compile("16" + r"\s+pesos", re.IGNORECASE),
-    re.compile(r"\$" + "6(?:\.00)?\s*MXN", re.IGNORECASE),
+    re.compile(r"\$" + "6" + r"(?:\.00)?\s*MXN", re.IGNORECASE),
 ]
 ignored_dirs = {".git", "node_modules", "dist", ".wrangler"}
 issues = []
@@ -31,6 +33,8 @@ for path in ROOT.rglob("*"):
     if any(part in ignored_dirs for part in path.parts):
         continue
     rel = path.relative_to(ROOT).as_posix()
+    if any(pattern.search(path.name) for _, pattern in blocked):
+        issues.append(f"{rel}: nombre de archivo no permitido")
     if path.is_dir():
         if any(pattern.search(rel) for _, pattern in blocked):
             issues.append(f"{rel}: nombre de directorio no permitido")

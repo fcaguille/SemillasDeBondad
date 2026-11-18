@@ -54,7 +54,7 @@ export const MAX_INTEGRANTES = 3;
  */
 export type EstadoCuenta = "pendiente_pago" | "activa" | "suspendida";
 
-/** True when the $16 MXN escrow is paid (full access). */
+/** True when the $10 MXN escrow is paid (full access). */
 export const tieneGarantia = (u: Pick<Usuario, "estado"> | null | undefined) =>
   u?.estado === "activa";
 /** True for any signed-in account allowed to rate planters (free or paid). */

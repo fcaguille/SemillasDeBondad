@@ -345,7 +345,7 @@ function requireActive() {
   if (usr.estado !== "activa")
     throw new ApiError(
       "pago_pendiente",
-      "Modo Gratuito: activa tu garantía ($16 MXN) para crear macetas y levantar reportes.",
+      "Modo Gratuito: activa tu garantía ($10.00 MXN) para crear macetas y levantar reportes.",
       402,
     );
   return usr;

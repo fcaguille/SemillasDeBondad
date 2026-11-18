@@ -28,7 +28,7 @@ Podrán participar estudiantes inscritos en cualquiera de las licenciaturas de l
 ## 3. Estructura Financiera, Custodia y Comisiones
 Para garantizar la viabilidad operativa sin costo de infraestructura y asegurar la integridad del premio:
 
-* **Monto total de entrada:** **$16.00 MXN** por cuenta única.
+* **Monto total de entrada:** **$10.00 MXN** por cuenta única.
 * **Desglose transparente:**
   * **$9.40 MXN netos** ingresan al **Fondo Común en Custodia** (pozo acumulado visible en tiempo real en la aplicación).
   * **$0.60 MXN** corresponden al **6% de comisión de procesamiento** de la pasarela de pagos (Mercado Pago Checkout Pro).
