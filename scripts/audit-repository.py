@@ -28,7 +28,7 @@ old_prices = [
     re.compile(r"\$" + "20" + r"(?:\.00)?(?:\s*MXN)?", re.IGNORECASE),
     re.compile(r"\$" + "14" + r"\.55(?:\s*MXN)?", re.IGNORECASE),
 ]
-commission_terms = re.compile(r"\b" + "comisi" + r"[óo]n(?:es)?\b|" + "comision" + "_centavos|" + r"3\.5%|" + r"\b" + "I" + "VA" + r"\b", re.IGNORECASE)
+forbidden_financial_terms = re.compile(r"\b" + "comisi" + r"[óo]n(?:es)?(?:\b|_)|" + r"3\.5%|" + r"\b" + "I" + "VA" + r"\b", re.IGNORECASE)
 
 ignored_dirs = {".git", "node_modules", "dist", ".wrangler"}
 issues = []
@@ -54,7 +54,7 @@ for path in ROOT.rglob("*"):
         for pattern in old_prices:
             if pattern.search(line):
                 issues.append(f"{rel}:{line_no}: precio anterior detectado")
-        if rel != "scripts/audit-repository.py" and commission_terms.search(line):
+        if rel != "scripts/audit-repository.py" and forbidden_financial_terms.search(line):
             issues.append(f"{rel}:{line_no}: término financiero no permitido")
 
 if issues:
