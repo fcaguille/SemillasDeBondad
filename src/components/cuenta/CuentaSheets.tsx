@@ -208,7 +208,6 @@ export function GarantiaSheet({
               </span>,
             ],
             ["Aportación al Pozo Común", formatMXN(pago.aportacion_centavos)],
-            ["Comisión pasarela", formatMXN(pago.comision_centavos)],
             ["Total pagado", <b key="t">{formatMXN(pago.total_centavos)} MXN</b>],
             ["Fecha", pago.pagado_en ? formatFecha(pago.pagado_en) : "—"],
           ].map(([k, v]) => (
