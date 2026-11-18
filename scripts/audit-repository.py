@@ -20,12 +20,16 @@ blocked = [
     ("sigla", re.compile(r"\b" + sigla_dos + r"\b", re.IGNORECASE)),
 ]
 old_prices = [
-    re.compile(r"\$" + "16" + r"(?:\.00)?", re.IGNORECASE),
-    re.compile("16" + r"\.00\s*MXN", re.IGNORECASE),
-    re.compile("16" + r"\s*MXN", re.IGNORECASE),
-    re.compile("16" + r"\s+pesos", re.IGNORECASE),
-    re.compile(r"\$" + "6" + r"(?:\.00)?\s*MXN", re.IGNORECASE),
+    re.compile(r"\$" + "5" + r"\.29(?:\s*MXN)?", re.IGNORECASE),
+    re.compile(r"\$" + "5" + r"\.05(?:\s*MXN)?", re.IGNORECASE),
+    re.compile(r"~\s*\$?" + "6" + r"(?:\.00)?\s*MXN", re.IGNORECASE),
+    re.compile(r"\$" + "9" + r"\.40(?:\s*MXN)?", re.IGNORECASE),
+    re.compile(r"\$" + "0" + r"\.60(?:\s*MXN)?", re.IGNORECASE),
+    re.compile(r"\$" + "20" + r"(?:\.00)?(?:\s*MXN)?", re.IGNORECASE),
+    re.compile(r"\$" + "14" + r"\.55(?:\s*MXN)?", re.IGNORECASE),
 ]
+commission_terms = re.compile("comisi" + "ón|comision_centavos|" + "3.5" + r"%|" + "IVA", re.IGNORECASE)
+
 ignored_dirs = {".git", "node_modules", "dist", ".wrangler"}
 issues = []
 
@@ -50,6 +54,8 @@ for path in ROOT.rglob("*"):
         for pattern in old_prices:
             if pattern.search(line):
                 issues.append(f"{rel}:{line_no}: precio anterior detectado")
+        if commission_terms.search(line):
+            issues.append(f"{rel}:{line_no}: referencia a comisiones no permitida")
 
 if issues:
     print("\n".join(issues))
