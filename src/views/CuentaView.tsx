@@ -195,7 +195,7 @@ export function CuentaView() {
                 ))}
               </ul>
               <ActivarGarantiaButton className="mt-4 w-full text-[15px]">
-                Activar Garantía ($10.00 MXN)
+                Activar Garantía ($16.00 MXN)
               </ActivarGarantiaButton>
             </section>
           )}
