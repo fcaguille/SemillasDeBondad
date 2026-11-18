@@ -3,21 +3,21 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-ai = chr(97) + chr(105)
-ia = chr(105) + chr(97)
+sigla_uno = chr(97) + chr(105)
+sigla_dos = chr(105) + chr(97)
 blocked = [
     ("proveedor", re.compile("fig" + "ma", re.IGNORECASE)),
     ("generador", re.compile("chat" + "gpt", re.IGNORECASE)),
-    ("proveedor", re.compile("open" + ai, re.IGNORECASE)),
+    ("proveedor", re.compile("open" + sigla_uno, re.IGNORECASE)),
     ("proveedor", re.compile("cl" + "aude", re.IGNORECASE)),
     ("proveedor", re.compile("anth" + "ropic", re.IGNORECASE)),
     ("proveedor", re.compile("gem" + "ini", re.IGNORECASE)),
     ("modelo", re.compile(r"\b" + "ll" + "m" + r"\b", re.IGNORECASE)),
-    ("frase", re.compile("generado por " + ia, re.IGNORECASE)),
+    ("frase", re.compile("generado por " + sigla_dos, re.IGNORECASE)),
     ("rol", re.compile("asis" + "tente", re.IGNORECASE)),
     ("frase", re.compile("inteligencia " + "artificial", re.IGNORECASE)),
-    ("sigla", re.compile(r"\b" + ai + r"\b", re.IGNORECASE)),
-    ("sigla", re.compile(r"\b" + ia + r"\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + sigla_uno + r"\b", re.IGNORECASE)),
+    ("sigla", re.compile(r"\b" + sigla_dos + r"\b", re.IGNORECASE)),
 ]
 old_prices = [
     re.compile(r"\$" + "16" + r"(?:\.00)?", re.IGNORECASE),
