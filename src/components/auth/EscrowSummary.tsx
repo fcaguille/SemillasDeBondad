@@ -27,11 +27,7 @@ export function EscrowSummary({ cuota }: { cuota: CuotaEntrada | undefined }) {
             <dt className="text-muted-foreground">Aportación al Pozo Común</dt>
             <dd className="font-medium">{formatMXN(cuota.aportacion_centavos)} MXN</dd>
           </div>
-          <div className="flex justify-between gap-3">
-            <dt className="text-muted-foreground">Comisión pasarela Mercado Pago</dt>
-            <dd className="font-medium">{formatMXN(cuota.comision_centavos)} MXN</dd>
-          </div>
-          <div className="my-1 border-t border-dashed border-border" />
+                    <div className="my-1 border-t border-dashed border-border" />
           <div className="flex justify-between gap-3 text-[15px]">
             <dt className="font-bold">Total único de entrada</dt>
             <dd className="font-extrabold">{formatMXN(cuota.total_centavos)} MXN</dd>
