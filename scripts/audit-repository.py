@@ -27,6 +27,7 @@ old_prices = [
     re.compile(r"\$" + "0" + r"\.60(?:\s*MXN)?", re.IGNORECASE),
     re.compile(r"\$" + "20" + r"(?:\.00)?(?:\s*MXN)?", re.IGNORECASE),
     re.compile(r"\$" + "14" + r"\.55(?:\s*MXN)?", re.IGNORECASE),
+    re.compile("6" + r"%", re.IGNORECASE),
 ]
 commission_terms = re.compile(r"\b" + "comisi" + r"[óo]n(?:es)?\b|" + "comision" + "_centavos|" + r"3\.5%|" + r"\b" + "I" + "VA" + r"\b", re.IGNORECASE)
 
