@@ -49,7 +49,7 @@ export function AppShell() {
           <h1 className="mt-3 text-2xl font-extrabold tracking-tight">Modo de Descalificación</h1>
           {garantiaDevuelta ? (
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
-              Tu garantía fue devuelta. Tu cuenta y tus aportaciones se encuentran en modo de descalificación hasta que vuelvas a cubrir la garantía de participación ($10.00 MXN).
+              Tu garantía fue devuelta. Tu cuenta y tus aportaciones se encuentran en modo de descalificación hasta que vuelvas a cubrir la garantía de participación ($16.00 MXN).
             </p>
           ) : (
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
