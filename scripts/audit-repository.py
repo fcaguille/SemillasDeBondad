@@ -54,8 +54,8 @@ for path in ROOT.rglob("*"):
         for pattern in old_prices:
             if pattern.search(line):
                 issues.append(f"{rel}:{line_no}: precio anterior detectado")
-        if commission_terms.search(line):
-            issues.append(f"{rel}:{line_no}: referencia a comisiones no permitida")
+        if rel != "scripts/audit-repository.py" and commission_terms.search(line):
+            issues.append(f"{rel}:{line_no}: término financiero no permitido")
 
 if issues:
     print("\n".join(issues))
