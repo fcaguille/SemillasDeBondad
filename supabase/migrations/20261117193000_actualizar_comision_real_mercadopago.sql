@@ -1,5 +1,5 @@
 ALTER TABLE public.pagos_mercadopago
-  ALTER COLUMN monto_neto_pozo SET DEFAULT 4.95;
+  ALTER COLUMN monto_neto_pozo SET DEFAULT 10.00;
 
 CREATE OR REPLACE FUNCTION public.registrar_pago_aprobado(
   p_mp_payment_id text,
@@ -12,8 +12,8 @@ SECURITY DEFINER
 SET search_path = public
 AS $function$
 BEGIN
-  IF p_monto < 10.00 THEN
-    RAISE EXCEPTION 'El pago debe ser de al menos $10.00 MXN.';
+  IF p_monto < 16.00 THEN
+    RAISE EXCEPTION 'El pago debe ser de al menos $16.00 MXN.';
   END IF;
 
   PERFORM 1
@@ -28,12 +28,12 @@ BEGIN
   INSERT INTO public.pagos_mercadopago
     (mp_payment_id, user_id, no_cuenta, monto_bruto, monto_neto_pozo, estatus_mp, fecha_aprobacion)
   VALUES
-    (p_mp_payment_id, p_user_id, p_no_cuenta, p_monto, 4.95, 'approved', now())
+    (p_mp_payment_id, p_user_id, p_no_cuenta, p_monto, 10.00, 'approved', now())
   ON CONFLICT (user_id) DO UPDATE SET
     mp_payment_id = EXCLUDED.mp_payment_id,
     no_cuenta = EXCLUDED.no_cuenta,
     monto_bruto = EXCLUDED.monto_bruto,
-    monto_neto_pozo = EXCLUDED.monto_neto_pozo,
+    monto_neto_pozo = 10.00,
     estatus_mp = 'approved',
     fecha_aprobacion = now();
 
@@ -56,7 +56,6 @@ RETURNS TABLE(
   usuario_id uuid,
   folio text,
   aportacion_centavos integer,
-  comision_centavos integer,
   total_centavos integer,
   moneda text,
   estado text,
@@ -71,8 +70,7 @@ AS $function$
     p.mp_payment_id,
     p.user_id,
     'MP-' || p.mp_payment_id,
-    495,
-    505,
+    1000,
     round(p.monto_bruto * 100)::integer,
     'MXN',
     CASE WHEN p.estatus_mp = 'approved' THEN 'aprobado' ELSE 'pendiente' END,
